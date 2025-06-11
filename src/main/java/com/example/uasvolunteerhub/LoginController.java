@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class LoginController {
+
     @FXML
     private TextField usernameField;
 
@@ -26,21 +27,19 @@ public class LoginController {
 
         if ("admin".equals(username) && "admin123".equals(password)) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("Login-home.fxml")); // Ganti sesuai file FXML tujuanmu
+                // Navigasi ke fill-profile.fxml
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("fill-profile.fxml"));
                 Parent root = loader.load();
 
-                // Ambil stage dari komponen yang ada sekarang
                 Stage stage = (Stage) usernameField.getScene().getWindow();
-
-                // Ganti scene dan sesuaikan ukuran
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
+                stage.setTitle("Fill In Profile");
                 stage.sizeToScene();
-                stage.setTitle("Welcome Admin");
 
             } catch (IOException e) {
                 e.printStackTrace();
-                showAlert(AlertType.ERROR, "Error", "Failed to load the next screen.");
+                showAlert(AlertType.ERROR, "Error", "Failed to load profile page.");
             }
         } else {
             showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password.");
