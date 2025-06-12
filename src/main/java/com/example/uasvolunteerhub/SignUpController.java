@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class SignUpController {
 
@@ -29,33 +32,54 @@ public class SignUpController {
 
     @FXML
     protected void handleSignUp() {
-        String name = nameField.getText();
-        String email = emailField.getText();
-        String password = passwordField.getText();
+        String name = nameField.getText().trim();
+        String email = emailField.getText().trim();
+        String password = passwordField.getText().trim();
 
         if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
             showAlert(AlertType.WARNING, "Incomplete Data", "Please fill in all fields.");
             return;
         }
 
-        // Simulasi pendaftaran berhasil
-        showAlert(AlertType.INFORMATION, "Registration Successful", "Welcome, " + name + "!");
+        try (Connection conn = Database.getConnection()) {
+            // check if email already exists
+            String checkQuery = "SELECT * FROM users WHERE email = ?";
+            PreparedStatement checkStmt = conn.prepareStatement(checkQuery);
+            checkStmt.setString(1, email);
+            ResultSet rs = checkStmt.executeQuery();
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
-            Parent root = loader.load();
+            if (rs.next()) {
+                showAlert(AlertType.ERROR, "Registration Failed", "Email already registered.");
+                return;
+            }
 
-            Stage stage = (Stage) nameField.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Login Page");
-            stage.sizeToScene();
+            // insert new user
+            String insertQuery = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(insertQuery);
+            stmt.setString(1, name);
+            stmt.setString(2, email);
+            stmt.setString(3, password); // gunakan hashing jika perlu
 
-        } catch (IOException e) {
+            int rowsInserted = stmt.executeUpdate();
+            if (rowsInserted > 0) {
+                showAlert(AlertType.INFORMATION, "Registration Successful", "Welcome, " + name + "!");
+
+                // redirect to login page
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
+                Parent root = loader.load();
+
+                Stage stage = (Stage) nameField.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Login Page");
+                stage.sizeToScene();
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
-            showAlert(AlertType.ERROR, "Error", "Failed to load login page.");
+            showAlert(AlertType.ERROR, "Error", "Failed to register user.");
         }
     }
+
 
     private void showAlert(AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

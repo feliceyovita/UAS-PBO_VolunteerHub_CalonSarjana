@@ -34,14 +34,14 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Label layoutX="446.0" layoutY="348.0" prefHeight="34.0" prefWidth="139.0" style="-fx-font-size: 12; -fx-font-weight: bold;" text="Forget your password?" underline="true">
+      <Button layoutX="446.0" layoutY="348.0" onAction="#handleForgotPassword" style="-fx-background-color: transparent; -fx-font-size: 12; -fx-font-weight: bold; -fx-underline: true;" text="Forgot your password?" textFill="#216516">
          <font>
             <Font name="SansSerif Bold" size="64.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
-      </Label>
+      </Button>
       <Button layoutX="25.0" layoutY="22.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="35.0" style="-fx-background-radius: 100; -fx-background-color: white;">
          <font>
             <Font name="SansSerif Bold" size="14.0" />

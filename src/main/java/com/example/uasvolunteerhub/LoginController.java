@@ -11,6 +11,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class LoginController {
 
@@ -22,27 +25,55 @@ public class LoginController {
 
     @FXML
     protected void handleLogin() {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+        String email = usernameField.getText().trim();
+        String password = passwordField.getText().trim();
 
-        if ("admin".equals(username) && "admin123".equals(password)) {
-            try {
-                // Navigasi ke fill-profile.fxml
+        if (email.isEmpty() || password.isEmpty()) {
+            showAlert(AlertType.ERROR, "Login Failed", "Please enter both email and password.");
+            return;
+        }
+
+        try (Connection conn = Database.getConnection()) {
+            String query = "SELECT * FROM users WHERE email = ? AND password = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, email);
+            stmt.setString(2, password); // consider hashing for production
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                // success: go to next scene
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("fill-profile.fxml"));
                 Parent root = loader.load();
 
                 Stage stage = (Stage) usernameField.getScene().getWindow();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
+                stage.setScene(new Scene(root));
                 stage.setTitle("Fill In Profile");
                 stage.sizeToScene();
 
-            } catch (IOException e) {
-                e.printStackTrace();
-                showAlert(AlertType.ERROR, "Error", "Failed to load profile page.");
+            } else {
+                showAlert(AlertType.ERROR, "Login Failed", "Invalid email or password.");
             }
-        } else {
-            showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "Error", "Failed to access the database.");
+        }
+    }
+
+    @FXML
+    private void handleForgotPassword() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("forgotPassword-view.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Forgot Password");
+            stage.sizeToScene();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "Error", "Failed to load forgot password page.");
         }
     }
 
