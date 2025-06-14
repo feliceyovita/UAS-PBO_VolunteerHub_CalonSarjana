@@ -24,7 +24,7 @@ public class LoginController {
     private PasswordField passwordField;
 
     @FXML
-    protected void handleLogin() {
+    protected void handleLogin() throws IOException {
         String email = usernameField.getText().trim();
         String password = passwordField.getText().trim();
 
@@ -32,30 +32,40 @@ public class LoginController {
             showAlert(AlertType.ERROR, "Login Failed", "Please enter both email and password.");
             return;
         }
+        if (email.equals("admin@gmail.com") && password.equals("admin123")) {
+            // arahkan langsung ke adminhome-view.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("adminhome-view.fxml"));
+            Parent root = loader.load();
 
-        try (Connection conn = Database.getConnection()) {
-            String query = "SELECT * FROM users WHERE email = ? AND password = ?";
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, email);
-            stmt.setString(2, password); // consider hashing for production
-            ResultSet rs = stmt.executeQuery();
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Admin Dashboard");
+            stage.sizeToScene();
+        } else {
+            try (Connection conn = Database.getConnection()) {
+                String query = "SELECT * FROM users WHERE email = ? AND password = ?";
+                PreparedStatement stmt = conn.prepareStatement(query);
+                stmt.setString(1, email);
+                stmt.setString(2, password); // consider hashing for production
+                ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                // success: go to next scene
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("fill-profile.fxml"));
-                Parent root = loader.load();
+                if (rs.next()) {
+                    // success: go to next scene
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("fill-profile.fxml"));
+                    Parent root = loader.load();
 
-                Stage stage = (Stage) usernameField.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Fill In Profile");
-                stage.sizeToScene();
+                    Stage stage = (Stage) usernameField.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Fill In Profile");
+                    stage.sizeToScene();
 
-            } else {
-                showAlert(AlertType.ERROR, "Login Failed", "Invalid email or password.");
+                } else {
+                    showAlert(AlertType.ERROR, "Login Failed", "Invalid email or password.");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                showAlert(AlertType.ERROR, "Error", "Failed to access the database.");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(AlertType.ERROR, "Error", "Failed to access the database.");
         }
     }
 
