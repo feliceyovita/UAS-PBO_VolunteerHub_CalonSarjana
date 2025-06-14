@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import com.example.uasvolunteerhub.Session;
 
 public class LoginController {
 
@@ -50,13 +51,15 @@ public class LoginController {
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
-                    // success: go to next scene
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("fill-profile.fxml"));
+                    // asumsi: user sudah pernah register
+                    Session.isUserRegistered = true;
+
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpDone-view.fxml"));
                     Parent root = loader.load();
 
                     Stage stage = (Stage) usernameField.getScene().getWindow();
                     stage.setScene(new Scene(root));
-                    stage.setTitle("Fill In Profile");
+                    stage.setTitle("Welcome");
                     stage.sizeToScene();
 
                 } else {

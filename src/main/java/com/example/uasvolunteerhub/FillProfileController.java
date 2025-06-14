@@ -1,9 +1,15 @@
 package com.example.uasvolunteerhub;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.stage.Stage;
+import java.io.IOException;
 
 public class FillProfileController {
 
@@ -20,25 +26,24 @@ public class FillProfileController {
     private DatePicker dobPicker;
 
     @FXML
-    private void handleSave() {
+    private void handleSave(ActionEvent event) {
+        System.out.println("TOMBOL SAVE DIKLIK!");
+
         String name = nameField.getText();
         String email = emailField.getText();
         String phone = phoneField.getText();
         String dob = (dobPicker.getValue() != null) ? dobPicker.getValue().toString() : "";
 
-        if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || dob.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Incomplete Data", "Please fill in all fields.");
-        } else {
-            // Simulasi penyimpanan
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Profile saved successfully!");
-        }
-    }
+        Session.isUserRegistered = true;
 
-    private void showAlert(Alert.AlertType type, String title, String content) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("SignUpDone-view.fxml"));
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
