@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: B2D3C2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.adminHomeController">
+    <left>
+        <VBox prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
+            <padding>
+                <Insets bottom="30" left="20" right="20" top="30" />
+            </padding>
+
+            <!-- Icon Back -->
+            <Button onAction="#handleBack" style="-fx-background-color: white; -fx-shape: 'M 0 0 L 20 0 L 20 20 L 0 20 Z'; -fx-font-size: 20px; -fx-text-fill: green; -fx-background-radius: 100;">
+                ←
+            </Button>
+
+            <!-- Account -->
+            <Button graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Account">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/account.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <!-- Dashboard -->
+            <Button contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Dashboard">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/dashboard.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <!-- Manage Activities -->
+            <Button contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Manage Activities">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/manage_activity.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <!-- Add Activity -->
+            <Button contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Add Activity">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/add_activity.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="15">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: darkgreen" text="Hello, Admin!">
+            <font>
+               <Font name="SansSerif Bold" size="12.0" />
+            </font></Label>
+            <Label style="-fx-font-size: 18px; -fx-underline: true;" text="Dashboard">
+            <font>
+               <Font name="SansSerif Bold" size="12.0" />
+            </font></Label>
+
+            <!-- Activity Table -->
+            <VBox spacing="10">
+                <Label style="-fx-font-weight: bold;" text="Activities">
+               <font>
+                  <Font name="SansSerif Bold" size="12.0" />
+               </font></Label>
+                <TableView fx:id="activityTable" prefHeight="200" style="-fx-background-color: B2D3C2; -fx-border-color: 1111bc;">
+                    <columns>
+                        <TableColumn fx:id="colActNo" prefWidth="38.666656494140625" text="SN" />
+                        <TableColumn fx:id="colActTitle" prefWidth="426.0" text="Activities" />
+                        <TableColumn fx:id="colActAction" prefWidth="254.6666259765625" text="Action" />
+                    </columns>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+                </TableView>
+                <Label fx:id="totalActivitiesLabel" style="-fx-background-color: B2D3C2;" />
+            </VBox>
+
+            <!-- Volunteer Table -->
+            <VBox spacing="10">
+                <Label style="-fx-font-weight: bold;" text="Volunteers" />
+                <TableView fx:id="volunteerTable" prefHeight="200" style="-fx-background-color: B2D3C2; -fx-border-color: ffffff;">
+                    <columns>
+                        <TableColumn fx:id="colVolNo" prefWidth="38.666656494140625" text="SN" />
+                        <TableColumn fx:id="colVolName" prefWidth="254.0" text="Volunteers" />
+                        <TableColumn fx:id="colVolActivity" prefWidth="426.0" text="Activity" />
+                    </columns>
+                </TableView>
+                <Label fx:id="totalVolunteersLabel" />
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>
