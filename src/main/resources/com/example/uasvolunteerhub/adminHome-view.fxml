@@ -19,11 +19,6 @@
                 <Insets bottom="30" left="20" right="20" top="30" />
             </padding>
 
-            <!-- Icon Back -->
-            <Button onAction="#handleBack" style="-fx-background-color: white; -fx-shape: 'M 0 0 L 20 0 L 20 20 L 0 20 Z'; -fx-font-size: 20px; -fx-text-fill: green; -fx-background-radius: 100;">
-                ←
-            </Button>
-
             <!-- Account -->
             <Button graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Account">
                 <graphic>
@@ -34,13 +29,16 @@
             </Button>
 
             <!-- Dashboard -->
-            <Button contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Dashboard">
+            <Button contentDisplay="LEFT" graphicTextGap="10"
+                    style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-family: 'Arial'; -fx-font-weight: bold;"
+                    text="Dashboard">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@../../../icon/dashboard.png" />
                     </ImageView>
                 </graphic>
             </Button>
+
 
             <!-- Manage Activities -->
             <Button contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Manage Activities">
@@ -68,29 +66,29 @@
                 <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
             <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: darkgreen" text="Hello, Admin!">
-            <font>
-               <Font name="SansSerif Bold" size="12.0" />
-            </font></Label>
+                <font>
+                    <Font name="SansSerif Bold" size="12.0" />
+                </font></Label>
             <Label style="-fx-font-size: 18px; -fx-underline: true;" text="Dashboard">
-            <font>
-               <Font name="SansSerif Bold" size="12.0" />
-            </font></Label>
+                <font>
+                    <Font name="SansSerif Bold" size="12.0" />
+                </font></Label>
 
             <!-- Activity Table -->
             <VBox spacing="10">
                 <Label style="-fx-font-weight: bold;" text="Activities">
-               <font>
-                  <Font name="SansSerif Bold" size="12.0" />
-               </font></Label>
-                <TableView fx:id="activityTable" prefHeight="200" style="-fx-background-color: B2D3C2; -fx-border-color: 1111bc;">
+                    <font>
+                        <Font name="SansSerif Bold" size="12.0" />
+                    </font></Label>
+                <TableView fx:id="activityTable" prefHeight="200" style="-fx-background-color: transparent; -fx-border-color: 1111bc;">
                     <columns>
                         <TableColumn fx:id="colActNo" prefWidth="38.666656494140625" text="SN" />
                         <TableColumn fx:id="colActTitle" prefWidth="426.0" text="Activities" />
                         <TableColumn fx:id="colActAction" prefWidth="254.6666259765625" text="Action" />
                     </columns>
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
+                    <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                    </cursor>
                 </TableView>
                 <Label fx:id="totalActivitiesLabel" style="-fx-background-color: B2D3C2;" />
             </VBox>
