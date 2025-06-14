@@ -112,8 +112,14 @@ ALTER TABLE `activity`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
+    ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
+
+-- Tambahkan role di bawah ini
+ALTER TABLE `users` ADD COLUMN role VARCHAR(20) DEFAULT 'volunteer';
+
+-- Tandai user admin
+UPDATE users SET role = 'admin' WHERE email = 'admin@gmail.com';
 
 --
 -- Indexes for table `volunteer`

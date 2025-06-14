@@ -33,35 +33,45 @@ public class LoginController {
             showAlert(AlertType.ERROR, "Login Failed", "Please enter both email and password.");
             return;
         }
-        if (email.equals("admin@gmail.com") && password.equals("admin123")) {
-            // arahkan langsung ke adminhome-view.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("adminhome-view.fxml"));
-            Parent root = loader.load();
 
-            Stage stage = (Stage) usernameField.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Admin Dashboard");
-            stage.sizeToScene();
+        if (email.equals("admin@gmail.com") && password.equals("admin123")) {
+            Dashboard dashboard = new AdminDashboard();
+            dashboard.loadDashboard((Stage) usernameField.getScene().getWindow());
         } else {
             try (Connection conn = Database.getConnection()) {
                 String query = "SELECT * FROM users WHERE email = ? AND password = ?";
                 PreparedStatement stmt = conn.prepareStatement(query);
                 stmt.setString(1, email);
-                stmt.setString(2, password); // consider hashing for production
+                stmt.setString(2, password);
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
-                    // asumsi: user sudah pernah register
-                    Session.isUserRegistered = true;
-
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpDone-view.fxml"));
-                    Parent root = loader.load();
+                    String role = rs.getString("role");
+                    Session.currentUserEmail = email;
 
                     Stage stage = (Stage) usernameField.getScene().getWindow();
-                    stage.setScene(new Scene(root));
-                    stage.setTitle("Welcome");
-                    stage.sizeToScene();
 
+                    if (role.equalsIgnoreCase("admin")) {
+                        Session.loggedInDashboard = new AdminDashboard();
+                        Session.loggedInDashboard.loadDashboard(stage);
+                    } else {
+                        Session.loggedInDashboard = new VolunteerDashboard();
+
+                        if (Session.justRegistered) {
+                            Session.justRegistered = false; // reset flag
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("fill-profile.fxml"));
+                            Parent root = loader.load();
+                            stage.setScene(new Scene(root));
+                            stage.setTitle("Complete Your Profile");
+                            stage.show();
+                        } else {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpDone-view.fxml"));
+                            Parent root = loader.load();
+                            stage.setScene(new Scene(root));
+                            stage.setTitle("Welcome Back!");
+                            stage.show();
+                        }
+                    }
                 } else {
                     showAlert(AlertType.ERROR, "Login Failed", "Invalid email or password.");
                 }

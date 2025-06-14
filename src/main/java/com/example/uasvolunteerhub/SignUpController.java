@@ -64,6 +64,8 @@ public class SignUpController {
             if (rowsInserted > 0) {
                 showAlert(AlertType.INFORMATION, "Registration Successful", "Welcome, " + name + "!");
 
+                Session.justRegistered = true;
+
                 // redirect to login page
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
                 Parent root = loader.load();
