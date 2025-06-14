@@ -16,7 +16,12 @@
             <Font name="SansSerif Bold" size="64.0" />
          </font>
       </Label>
-      <Button layoutX="403.0" layoutY="275.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="213.0" style="-fx-background-color: #216516; -fx-background-radius: 50;" text="Your journey starts here!" textFill="WHITE">
+      <Button fx:id="goToDashboardButton"
+              onAction="#handleGoToDashboard"
+              layoutX="403.0" layoutY="275.0"
+              mnemonicParsing="false" prefHeight="28.0" prefWidth="213.0"
+              style="-fx-background-color: #216516; -fx-background-radius: 50;"
+              text="Your journey starts here!" textFill="WHITE">
          <font>
             <Font name="SansSerif Bold" size="15.0" />
          </font>
