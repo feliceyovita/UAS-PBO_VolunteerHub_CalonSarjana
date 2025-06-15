@@ -11,7 +11,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -38,15 +37,36 @@ CREATE TABLE `activity` (
   `description` text DEFAULT NULL,
   `type_of_volunteer` enum('donate','not donate') NOT NULL,
   `donation_amount` decimal(10,2) DEFAULT NULL,
-  `image` longblob DEFAULT NULL
+  `image` varchar(255) DEFAULT NULL  -- UBAH dari longblob ke varchar untuk menyimpan nama file
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `activity`
 --
 
-INSERT INTO `activity` (`id`, `title`, `date`, `benefits`, `location`, `contact`, `slot`, `description`, `type_of_volunteer`, `donation_amount`, `image`) VALUES
-(2, 'Save Raja Ampat', '2025-06-20', 'Melestarikan keindahan alam Indonesia. Jangan sampai Raja Ampat hancur Padahal kamu belum pernah mengunjunginya.', 'Raja Ampat', '081234567890', NULL, 'Selamatkan Raja Ampat!\r\nKita sudah kehilangan terlalu banyak, termasuk kekayaan alam dan keanekaragaman hayati akibat aktivitas dari industri pertambangan. Kali ini Raja Ampat yang menjadi korbannya.\r\nGreenpeace Indonesia mengajak publik untuk bersama-sama mendesak pemerintah agar amengevaluasi dan mencabut izin pertambangan nikel di Indonesia, khususnya Raja Ampat!', 'not donate', NULL, NULL);
+INSERT INTO `activity`
+(`id`, `title`, `date`, `benefits`, `location`, `contact`, `slot`, `description`, `type_of_volunteer`, `donation_amount`, `image`)
+VALUES
+-- Aktivitas 1
+(2, 'Save Raja Ampat', '2025-06-20',
+'Melestarikan keindahan alam Indonesia. Jangan sampai Raja Ampat hancur padahal belum sempat dikunjungi.',
+'Raja Ampat', '081234567890', NULL,
+'Selamatkan Raja Ampat!\r\nKita sudah kehilangan terlalu banyak, termasuk kekayaan alam dan keanekaragaman hayati akibat industri pertambangan. Kali ini Raja Ampat yang menjadi korbannya.\r\nGreenpeace Indonesia mengajak publik untuk mendesak pemerintah agar mengevaluasi dan mencabut izin pertambangan nikel di Indonesia, khususnya di Raja Ampat!',
+'not donate', NULL, 'img1.png'),  -- Hanya nama file
+
+-- Aktivitas 2
+(3, 'Bersih-Bersih Pantai Bali', '2025-07-05',
+'Membantu menjaga keindahan pantai Bali dari sampah plastik dan limbah wisata.',
+'Pantai Kuta, Bali', '082233445566', 50,
+'Ayo ikut bergabung dalam kegiatan bersih-bersih pantai bersama komunitas lokal dan relawan dari seluruh Indonesia!\r\nKegiatan ini tidak hanya membersihkan lingkungan, tetapi juga memberi edukasi kepada wisatawan tentang pentingnya tidak membuang sampah sembarangan.',
+'not donate', NULL, 'img2.png'),  -- Hanya nama file
+
+-- Aktivitas 3
+(4, 'Tanam Seribu Pohon di Bogor', '2025-07-15',
+'Berpartisipasi dalam penghijauan kota dan meminimalisir dampak pemanasan global.',
+'Gunung Salak, Bogor', '089912345678', 100,
+'Bersama relawan dan organisasi lingkungan, mari kita tanam seribu pohon di kawasan Gunung Salak untuk memulihkan ekosistem dan menambah ruang hijau di sekitar kita.\r\nSetiap pohon yang ditanam menjadi kontribusi nyata untuk masa depan bumi.',
+'not donate', NULL, 'img3.png');  -- Hanya nama file
 
 -- --------------------------------------------------------
 
@@ -60,17 +80,18 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `phone_number` varchar(20) DEFAULT NULL,
-  `birth_date` date DEFAULT NULL
+  `birth_date` date DEFAULT NULL,
+  `role` varchar(20) DEFAULT 'volunteer'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `phone_number`, `birth_date`) VALUES
-(1, 'admin', 'admin@gmail.com', 'admin123', '080808080808', '2015-06-01'),
-(3, 'dini', 'dinisahfitri@gmail.com', 'dini', NULL, NULL),
-(4, 'felice', 'felice@gmail.com', '123456', NULL, NULL);
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `phone_number`, `birth_date`, `role`) VALUES
+(1, 'admin', 'admin@gmail.com', 'admin123', '080808080808', '2015-06-01', 'admin'),
+(3, 'dini', 'dinisahfitri@gmail.com', 'dini', NULL, NULL, 'volunteer'),
+(4, 'felice', 'felice@gmail.com', '123456', NULL, NULL, 'volunteer');
 
 -- --------------------------------------------------------
 
@@ -112,14 +133,8 @@ ALTER TABLE `activity`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-    ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
-
--- Tambahkan role di bawah ini
-ALTER TABLE `users` ADD COLUMN role VARCHAR(20) DEFAULT 'volunteer';
-
--- Tandai user admin
-UPDATE users SET role = 'admin' WHERE email = 'admin@gmail.com';
 
 --
 -- Indexes for table `volunteer`
@@ -137,7 +152,7 @@ ALTER TABLE `volunteer`
 -- AUTO_INCREMENT for table `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -161,6 +176,7 @@ ALTER TABLE `volunteer`
 ALTER TABLE `volunteer`
   ADD CONSTRAINT `fk_volunteer_activity` FOREIGN KEY (`id_activity`) REFERENCES `activity` (`id`),
   ADD CONSTRAINT `fk_volunteer_user` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

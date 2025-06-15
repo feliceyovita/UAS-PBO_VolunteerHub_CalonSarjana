@@ -1,11 +1,11 @@
 package com.example.uasvolunteerhub;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 public class SignUpDoneController {
 
@@ -14,7 +14,18 @@ public class SignUpDoneController {
 
     @FXML
     private void handleGoToDashboard() {
-        Stage stage = (Stage) goToDashboardButton.getScene().getWindow();
-        Session.loggedInDashboard.loadDashboard(stage);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Volunteer-dashboard-view.fxml"));
+            Parent dashboardRoot = loader.load();
+
+            Stage stage = (Stage) goToDashboardButton.getScene().getWindow();
+
+            Scene scene = new Scene(dashboardRoot);
+            stage.setScene(scene);
+            stage.setTitle("Volunteer Dashboard");
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
