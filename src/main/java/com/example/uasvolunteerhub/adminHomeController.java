@@ -3,12 +3,16 @@ package com.example.uasvolunteerhub;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.util.Callback;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.*;
 
 public class adminHomeController {
@@ -30,16 +34,20 @@ public class adminHomeController {
 
     @FXML
     public void initialize() {
+        // Test database connection first
+        if (!Database.testConnection()) {
+            showAlert("Database Error", "Cannot connect to database! Please check your database configuration.");
+            return;
+        }
+
         styleTableView(activityTable);
         styleTableView(volunteerTable);
         loadActivities();
         loadVolunteers();
 
-        // Styling khusus buat header
         styleTableViewHeaders(activityTable);
         styleTableViewHeaders(volunteerTable);
     }
-
 
     private void styleTableView(TableView<?> table) {
         table.setStyle(
@@ -53,14 +61,6 @@ public class adminHomeController {
                         "-fx-border-radius: 10;" +
                         "-fx-background-radius: 10;"
         );
-
-        table.lookupAll(".column-header").forEach(header -> {
-            header.setStyle("-fx-background-color: #BFDACC;");
-        });
-
-        table.lookupAll(".column-header-background").forEach(bg -> {
-            bg.setStyle("-fx-background-color: #BFDACC;");
-        });
     }
 
     private void styleTableViewHeaders(TableView<?> tableView) {
@@ -78,12 +78,11 @@ public class adminHomeController {
         });
     }
 
-
     private void loadActivities() {
         activityList.clear();
         try (Connection conn = Database.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT id, title FROM activity")) {
+             ResultSet rs = stmt.executeQuery("SELECT id, title FROM activity ORDER BY id")) {
 
             int index = 1;
             while (rs.next()) {
@@ -91,11 +90,14 @@ public class adminHomeController {
                 String title = rs.getString("title");
                 activityList.add(new ActivityRow(index++, id, title));
             }
+
             activityTable.setItems(activityList);
+
+            // Setup columns
             colActNo.setCellValueFactory(data -> data.getValue().snProperty());
             colActTitle.setCellValueFactory(data -> data.getValue().titleProperty());
 
-            // Set cell factory to center SN
+            // Center align SN column
             colActNo.setCellFactory(column -> new TableCell<>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
@@ -105,7 +107,7 @@ public class adminHomeController {
                 }
             });
 
-            // Set cell factory to center Activity Title
+            // Center align Title column
             colActTitle.setCellFactory(column -> new TableCell<>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
@@ -115,26 +117,57 @@ public class adminHomeController {
                 }
             });
 
-            // Set cell factory to center Action buttons
-            colActAction.setCellFactory(param -> new TableCell<>() {
+            // Action Column Setup
+            colActAction.setCellFactory(param -> new TableCell<ActivityRow, Void>() {
                 private final Button editBtn = new Button("✏ Edit");
                 private final Button delBtn = new Button("🗑 Delete");
                 private final HBox hBox = new HBox(10, editBtn, delBtn);
 
+                // Constructor block
                 {
-                    editBtn.setStyle("-fx-background-color: #216516; -fx-text-fill: white; -fx-background-radius: 5;");
-                    delBtn.setStyle("-fx-background-color: #216516; -fx-text-fill: white; -fx-background-radius: 5;");
-                    hBox.setAlignment(javafx.geometry.Pos.CENTER); // Align buttons in HBox
+                    // Style buttons
+                    editBtn.setStyle(
+                            "-fx-background-color: #4CAF50; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-background-radius: 5; " +
+                                    "-fx-cursor: hand; " +
+                                    "-fx-font-weight: bold;"
+                    );
+                    delBtn.setStyle(
+                            "-fx-background-color: #f44336; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-background-radius: 5; " +
+                                    "-fx-cursor: hand; " +
+                                    "-fx-font-weight: bold;"
+                    );
 
+                    hBox.setAlignment(javafx.geometry.Pos.CENTER);
+
+                    // Button actions dengan proper error handling
                     editBtn.setOnAction(event -> {
-                        ActivityRow row = getTableView().getItems().get(getIndex());
-                        System.out.println("Edit: " + row.getId());
-                        // open edit form here
+                        try {
+                            int rowIndex = getIndex();
+                            if (rowIndex >= 0 && rowIndex < getTableView().getItems().size()) {
+                                ActivityRow row = getTableView().getItems().get(rowIndex);
+                                handleEditActivity(row);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            showAlert("Error", "Failed to edit activity: " + e.getMessage());
+                        }
                     });
 
                     delBtn.setOnAction(event -> {
-                        ActivityRow row = getTableView().getItems().get(getIndex());
-                        deleteActivity(row.getId());
+                        try {
+                            int rowIndex = getIndex();
+                            if (rowIndex >= 0 && rowIndex < getTableView().getItems().size()) {
+                                ActivityRow row = getTableView().getItems().get(rowIndex);
+                                handleDeleteActivity(row);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            showAlert("Error", "Failed to delete activity: " + e.getMessage());
+                        }
                     });
                 }
 
@@ -145,7 +178,7 @@ public class adminHomeController {
                         setGraphic(null);
                     } else {
                         setGraphic(hBox);
-                        setAlignment(javafx.geometry.Pos.CENTER); // Center the whole cell
+                        setAlignment(javafx.geometry.Pos.CENTER);
                     }
                 }
             });
@@ -154,55 +187,104 @@ public class adminHomeController {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            showAlert("Database Error", "Failed to load activities: " + e.getMessage());
         }
     }
 
+    private void handleEditActivity(ActivityRow activity) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/edit-activity.fxml"));
+            Parent root = loader.load();
 
-    private Callback<TableColumn<ActivityRow, Void>, TableCell<ActivityRow, Void>> getActionCellFactory() {
-        return param -> new TableCell<>() {
-            private final Button editBtn = new Button("✏ Edit");
-            private final Button delBtn = new Button("🗑 Delete");
-            private final HBox hBox = new HBox(10, editBtn, delBtn);
+            // Get the controller and pass the activity data
+            EditActivityController controller = loader.getController();
+            controller.setActivityData(activity.getId());
 
-            {
-                editBtn.setStyle("-fx-background-color: #216516; -fx-text-fill: white; -fx-background-radius: 5;");
-                delBtn.setStyle("-fx-background-color: #216516; -fx-text-fill: white; -fx-background-radius: 5;");
-                editBtn.setOnAction(event -> {
-                    ActivityRow row = getTableView().getItems().get(getIndex());
-                    System.out.println("Edit: " + row.getId());
-                    // open edit form here
-                });
-                delBtn.setOnAction(event -> {
-                    ActivityRow row = getTableView().getItems().get(getIndex());
-                    deleteActivity(row.getId());
-                });
-            }
+            // Get current stage and set new scene
+            Stage stage = (Stage) activityTable.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : hBox);
-            }
-        };
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to open edit form: " + e.getMessage());
+        }
     }
 
-    private void deleteActivity(int id) {
-        try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("DELETE FROM activity WHERE id = ?")) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-            loadActivities();
+    private void handleDeleteActivity(ActivityRow activity) {
+        // Show confirmation dialog
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Activity");
+        alert.setHeaderText("Delete Activity: " + activity.getTitle());
+        alert.setContentText("Are you sure you want to delete this activity?\nThis will also remove all volunteers registered for this activity.\nThis action cannot be undone.");
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                deleteActivityFromDB(activity.getId());
+            }
+        });
+    }
+
+    private void deleteActivityFromDB(int id) {
+        Connection conn = null;
+        try {
+            conn = Database.getConnection();
+            conn.setAutoCommit(false); // Start transaction
+
+            // First delete volunteers associated with this activity
+            try (PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM volunteer WHERE id_activity = ?")) {
+                stmt1.setInt(1, id);
+                stmt1.executeUpdate();
+            }
+
+            // Then delete the activity
+            try (PreparedStatement stmt2 = conn.prepareStatement("DELETE FROM activity WHERE id = ?")) {
+                stmt2.setInt(1, id);
+                int rowsAffected = stmt2.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    conn.commit(); // Commit transaction
+                    showAlert("Success", "Activity and associated volunteers deleted successfully!");
+                    loadActivities(); // Reload activities table
+                    loadVolunteers(); // Reload volunteers table
+                } else {
+                    conn.rollback(); // Rollback transaction
+                    showAlert("Error", "Failed to delete activity. Activity not found.");
+                }
+            }
+
         } catch (SQLException e) {
+            try {
+                if (conn != null) {
+                    conn.rollback(); // Rollback on error
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
             e.printStackTrace();
+            showAlert("Database Error", "Failed to delete activity: " + e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.setAutoCommit(true); // Reset auto-commit
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void loadVolunteers() {
         volunteerList.clear();
         String query = """
-            SELECT v.name, a.title FROM volunteer v
+            SELECT v.name, a.title 
+            FROM volunteer v
             JOIN activity a ON v.id_activity = a.id
+            ORDER BY v.name
         """;
+
         try (Connection conn = Database.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
@@ -222,7 +304,16 @@ public class adminHomeController {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            showAlert("Database Error", "Failed to load volunteers: " + e.getMessage());
         }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     @FXML
@@ -230,6 +321,4 @@ public class adminHomeController {
         System.out.println("Back button clicked");
         // Implementasi navigasi jika perlu
     }
-
-
 }
