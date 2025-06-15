@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="540.0" maxWidth="960.0" minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #F8F9FA;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.EditActivityController">
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="960.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <children>
+            <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Edit Task" textFill="#333333">
+                <HBox.margin>
+                    <Insets left="20.0" />
+                </HBox.margin>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleBack" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: transparent; -fx-text-fill: #007BFF; -fx-border-color: transparent; -fx-cursor: hand; -fx-underline: true;" text="Go Back">
+                <HBox.margin>
+                    <Insets right="20.0" />
+                </HBox.margin>
+            </Button>
+        </children>
+    </HBox>
+
+    <!-- Main Content -->
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: #F8F9FA; -fx-background-color: #F8F9FA;" vbarPolicy="AS_NEEDED" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+        <content>
+            <VBox spacing="20.0" style="-fx-background-color: #F8F9FA;">
+                <padding>
+                    <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                </padding>
+                <children>
+
+                    <!-- First Row: Title and Location -->
+                    <HBox spacing="20.0">
+                        <children>
+                            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                <children>
+                                    <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Title" />
+                                    <TextField fx:id="titleField" prefHeight="35.0" promptText="" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" />
+                                </children>
+                            </VBox>
+                            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                <children>
+                                    <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Location" />
+                                    <TextField fx:id="locationField" prefHeight="35.0" promptText="" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" />
+                                </children>
+                            </VBox>
+                        </children>
+                    </HBox>
+
+                    <!-- Second Row: Date and Contact -->
+                    <HBox spacing="20.0">
+                        <children>
+                            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                <children>
+                                    <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Date" />
+                                    <DatePicker fx:id="datePicker" prefHeight="35.0" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4;" />
+                                </children>
+                            </VBox>
+                            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                <children>
+                                    <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Contact" />
+                                    <TextField fx:id="contactField" prefHeight="35.0" promptText="" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 17;" />
+                                </children>
+                            </VBox>
+                        </children>
+                    </HBox>
+
+                    <!-- Third Row: Benefits and Type of Volunteer -->
+                    <HBox spacing="20.0">
+                        <children>
+                            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                <children>
+                                    <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Benefits" />
+                                    <TextField fx:id="benefitsField" prefHeight="35.0" promptText="" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" />
+                                </children>
+                            </VBox>
+                            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                <children>
+                                    <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Type of Volunteer" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="30.0" style="-fx-padding: -40;">
+                                        <children>
+                                            <RadioButton fx:id="notDonateRadio" mnemonicParsing="false" onAction="#handleTypeChange" prefHeight="18.0" prefWidth="87.0" selected="true" style="-fx-text-fill: #333333;" text="Not Donate">
+                                    <toggleGroup>
+                                                    <ToggleGroup fx:id="volunteerTypeGroup" />
+                                    </toggleGroup>
+                                    <HBox.margin>
+                                       <Insets left="40.0" />
+                                    </HBox.margin></RadioButton>
+                                            <RadioButton fx:id="donateRadio" maxWidth="70.0" mnemonicParsing="false" onAction="#handleTypeChange" prefHeight="18.0" prefWidth="61.0" style="-fx-text-fill: #333333;" text="Donate" toggleGroup="$volunteerTypeGroup">
+                                    <HBox.margin>
+                                       <Insets />
+                                    </HBox.margin>
+                                            </RadioButton>
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </VBox>
+                        </children>
+                    </HBox>
+
+                    <!-- Fourth Row: Description and Upload Image -->
+                    <HBox alignment="TOP_LEFT" spacing="20.0">
+                        <children>
+                            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                <children>
+                                    <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Description" />
+                                    <TextArea fx:id="descriptionArea" prefHeight="120.0" promptText="Start writing here..." style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" wrapText="true" />
+                                </children>
+                            </VBox>
+                            <VBox prefWidth="250.0" spacing="5.0">
+                                <children>
+                                    <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Upload Image" />
+                                    <VBox alignment="CENTER" prefHeight="120.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-border-style: dashed;">
+                                        <children>
+                                            <Label style="-fx-font-size: 24px; -fx-text-fill: #CCCCCC;" text="📁" />
+                                            <Label fx:id="dragLabel" style="-fx-font-size: 12px; -fx-text-fill: #999999;" text="Drag&amp;Drop files here" textAlignment="CENTER" />
+                                            <Button fx:id="browseButton" mnemonicParsing="false" onAction="#handleImageUpload" style="-fx-background-color: #F0F0F0; -fx-text-fill: #666666; -fx-background-radius: 4; -fx-cursor: hand; -fx-font-size: 12px; -fx-border-color: #D0D0D0; -fx-border-radius: 4;" text="Browse" />
+                                        </children>
+                                        <padding>
+                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                        </padding>
+                                    </VBox>
+                                </children>
+                            </VBox>
+                        </children>
+                    </HBox>
+
+                    <!-- Donation Amount Field (hidden by default) -->
+                    <VBox fx:id="donationBox" managed="false" spacing="20.0" visible="false">
+                        <children>
+                            <VBox prefWidth="300.0" spacing="5.0">
+                                <children>
+                                    <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Donation Amount" />
+                                    <TextField fx:id="donationField" prefHeight="35.0" promptText="Enter amount (e.g., 50000)" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" />
+                                </children>
+                            </VBox>
+                            <Region HBox.hgrow="ALWAYS" />
+                        </children>
+                    </VBox>
+
+                    <!-- Action Button -->
+                    <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                        <children>
+                            <Button fx:id="doneButton" mnemonicParsing="false" onAction="#handleSave" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #28A745; -fx-text-fill: white; -fx-background-radius: 4; -fx-cursor: hand; -fx-font-weight: normal;" text="Done" />
+                        </children>
+                    </HBox>
+
+                </children>
+            </VBox>
+        </content>
+    </ScrollPane>
+
+</AnchorPane>
