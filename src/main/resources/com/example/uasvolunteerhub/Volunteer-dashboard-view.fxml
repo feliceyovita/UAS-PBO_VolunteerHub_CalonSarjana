@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane minHeight="600.0" minWidth="1000.0" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #B2D3C2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.VolunteerDashboardController">
+    <left>
+        <VBox prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
+            <padding>
+                <Insets bottom="30" left="20" right="20" top="30" />
+            </padding>
+
+            <!-- Account -->
+            <Button fx:id="accountBtn" graphicTextGap="10" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="Account">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/account.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <!-- Volunteer Recommendation -->
+            <Button fx:id="recommendationBtn" contentDisplay="LEFT" graphicTextGap="10" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-alignment: center-left;" text="Volunteer recommendation">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/recomen.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <!-- History of Activity -->
+            <Button fx:id="historyBtn" contentDisplay="LEFT" graphicTextGap="10" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/add_activity.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <!-- Log out -->
+            <Button fx:id="logoutBtn" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleLogout" prefWidth="160.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="Log out">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/log-out.png" />
+                    </ImageView>
+                </graphic>
+                <VBox.margin>
+                    <Insets top="340.0" />
+                </VBox.margin>
+            </Button>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="20" style="-fx-background-color: #B2D3C2;">
+            <padding>
+                <Insets bottom="20" left="30" right="30" top="30" />
+            </padding>
+
+            <!-- Search Bar -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <TextField fx:id="searchField" onAction="#handleSearch" prefWidth="600" promptText="Search any kind of social activity" style="-fx-background-radius: 25; -fx-padding: 10 15 10 40; -fx-font-size: 14px; -fx-background-color: white;">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
+                <Button fx:id="searchBtn" onAction="#handleSearch" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 20; -fx-padding: 8 16;" text="Search" />
+            </HBox>
+
+            <!-- Activities Grid -->
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="AS_NEEDED">
+                <content>
+                    <GridPane fx:id="activitiesGrid" hgap="20" vgap="20">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
+
+                        <!-- Activity Card 1  -->
+                        <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <ImageView fitHeight="120" fitWidth="220" preserveRatio="false">
+                                <Image url="@../../../ImgActivity/img1.png" />
+                            </ImageView>
+                            <VBox spacing="6">
+                                <padding>
+                                    <Insets bottom="12" left="12" right="12" top="12" />
+                                </padding>
+                                <Label prefHeight="20.0" prefWidth="185.0" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #666666;" text="Tree planting in Ninh Binh" />
+                                <Label style="-fx-text-fill: #666666; -fx-font-size: 10px;" text="Bac Hai, Ninh Binh Province, Viet Nam" />
+                                <VBox spacing="2">
+                                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666;" text="• Slots: 20" />
+                                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666;" text="• Purpose: Volunteer" />
+                                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666;" text="• Start date: 2nd November, 2023" />
+                                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666;" text="• End date: 5th November, 2023" />
+                                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666;" text="• Price: $10 / person" />
+                                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666;" text="• No donation" />
+                                </VBox>
+                                <HBox alignment="CENTER_RIGHT">
+                                    <Button style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-weight: bold; -fx-font-size: 11px; -fx-padding: 5 10;" text="Details" />
+                                </HBox>
+                            </VBox>
+                        </VBox>
+
+                        <!-- Activity Card 2 - Tree planting in Nghe An -->
+                        <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <ImageView fitHeight="120" fitWidth="220" preserveRatio="false">
+                                <Image url="@../../../ImgActivity/img2.png" />
+                            </ImageView>
+                            <VBox spacing="6">
+                                <padding>
+                                    <Insets bottom="12" left="12" right="12" top="12" />
+                                </padding>
+                                <Label prefHeight="20.0" prefWidth="185.0" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #666666;" text="Tree planting in Ninh Binh" />
+                                <Label style="-fx-text-fill: #666666; -fx-font-size: 10px;" text="Bac Hai, Ninh Binh Province, Viet Nam" />
+                                <VBox spacing="2">
+                                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666;" text="• Slots: 20" />
+                                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666;" text="• Purpose: Volunteer" />
+                                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666;" text="• Start date: 2nd November, 2023" />
+                                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666;" text="• End date: 5th November, 2023" />
+                                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666;" text="• Price: $10 / person" />
+                                    <Label style="-fx-font-size: 10px; -fx-text-fill: #666666;" text="• No donation" />
+                                </VBox>
+                                <HBox alignment="CENTER_RIGHT">
+                                    <Button style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-weight: bold; -fx-font-size: 11px; -fx-padding: 5 10;" text="Details" />
+                                </HBox>
+                            </VBox>
+                        </VBox>
+                  <columnConstraints>
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
+                    </GridPane>
+                </content>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>
