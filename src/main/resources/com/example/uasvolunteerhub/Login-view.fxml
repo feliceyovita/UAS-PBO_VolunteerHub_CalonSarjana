@@ -5,47 +5,45 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: B2D3C2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.LoginController">
-    <children>
-        <Label layoutX="446.0" layoutY="65.0" prefHeight="66.0" prefWidth="139.0" style="-fx-font-size: 40; -fx-font-weight: bold;" text="Log in" textFill="#216516">
-         <font>
-            <Font name="SansSerif Bold" size="64.0" />
-         </font></Label>
-        <TextField fx:id="usernameField" layoutX="343.0" layoutY="192.0" prefHeight="44.0" prefWidth="346.0" promptText="Email" style="-fx-background-radius: 12;" />
-        <Label layoutX="349.0" layoutY="150.0" prefHeight="34.0" prefWidth="64.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Email" textFill="#216516">
-         <font>
-            <Font name="SansSerif Bold" size="64.0" />
-         </font>
-      </Label>
-      <Label layoutX="349.0" layoutY="250.0" prefHeight="34.0" prefWidth="113.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Password" textFill="#216516">
-         <font>
-            <Font name="SansSerif Bold" size="64.0" />
-         </font>
-      </Label>
-        <PasswordField fx:id="passwordField" layoutX="343.0" layoutY="290.0" prefHeight="44.0" prefWidth="346.0" promptText="Password" style="-fx-background-radius: 12;" />
-        <Button layoutX="463.0" layoutY="393.0" onAction="#handleLogin" onMouseClicked="#handleLogin" prefHeight="23.0" prefWidth="98.0" style="-fx-background-radius: 50; -fx-background-color: #216516;" text="log in" textFill="#b2d3c2">
-         <font>
-            <Font name="SansSerif Bold" size="12.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
-      <Button layoutX="446.0" layoutY="348.0" onAction="#handleForgotPassword" style="-fx-background-color: transparent; -fx-font-size: 12; -fx-font-weight: bold; -fx-underline: true;" text="Forgot your password?" textFill="#216516">
-         <font>
-            <Font name="SansSerif Bold" size="64.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
-      <Button layoutX="25.0" layoutY="22.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="35.0" style="-fx-background-radius: 100; -fx-background-color: white;">
-         <font>
-            <Font name="SansSerif Bold" size="14.0" />
-         </font>
-      </Button>
-    </children>
-</AnchorPane>
+<StackPane prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #B2D3C2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.LoginController">
+
+    <VBox alignment="CENTER" maxWidth="360" spacing="16">
+
+        <!-- Judul -->
+        <Label style="-fx-font-weight: bold; -fx-font-size: 36;" text="Log in" textFill="#216516" />
+
+        <!-- Email Field -->
+        <VBox alignment="TOP_LEFT" spacing="6">
+            <Label style="-fx-font-weight: bold;" text="Email" textFill="#216516" />
+            <TextField fx:id="usernameField" promptText="Email" style="-fx-background-radius: 12; -fx-pref-height: 44;" />
+        </VBox>
+
+        <!-- Password Field -->
+        <VBox alignment="TOP_LEFT" spacing="6">
+            <Label style="-fx-font-weight: bold;" text="Password" textFill="#216516" />
+            <PasswordField fx:id="passwordField" promptText="Password" style="-fx-background-radius: 12; -fx-pref-height: 44;" />
+        </VBox>
+
+        <!-- Tombol Login -->
+        <Button maxWidth="150" onAction="#handleLogin" style="-fx-background-radius: 50; -fx-background-color: #216516;" text="Log In" textFill="#b2d3c2">
+            <font>
+                <Font name="SansSerif Bold" size="12.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </Button>
+
+        <!-- Forgot password -->
+        <Button onAction="#handleForgotPassword" style="-fx-background-color: transparent; -fx-font-size: 12; -fx-font-weight: bold; -fx-underline: true;" text="Forgot your password?" textFill="#216516">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </Button>
+
+    </VBox>
+</StackPane>
