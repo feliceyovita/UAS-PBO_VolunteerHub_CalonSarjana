@@ -4,11 +4,25 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
 public class VolunteerHomeController {
+
+    @FXML
+    private StackPane rootPane;
+
+    @FXML
+    private ImageView backgroundImageView;
+
+    @FXML
+    public void initialize() {
+        backgroundImageView.fitWidthProperty().bind(rootPane.widthProperty());
+        backgroundImageView.fitHeightProperty().bind(rootPane.heightProperty());
+    }
+
     @FXML
     protected void onLoginButtonClick() {
         try {
@@ -22,6 +36,7 @@ public class VolunteerHomeController {
             e.printStackTrace();
         }
     }
+
     @FXML
     protected void onSignUpButtonClick() {
         try {

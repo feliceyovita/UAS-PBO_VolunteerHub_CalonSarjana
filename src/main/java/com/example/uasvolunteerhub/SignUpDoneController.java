@@ -14,12 +14,12 @@ public class SignUpDoneController {
 
     @FXML
     private void handleGoToDashboard() {
+        System.out.println("BUTTON: " + goToDashboardButton); // tambahkan debug
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Volunteer-dashboard-view.fxml"));
             Parent dashboardRoot = loader.load();
 
             Stage stage = (Stage) goToDashboardButton.getScene().getWindow();
-
             Scene scene = new Scene(dashboardRoot);
             stage.setScene(scene);
             stage.setTitle("Volunteer Dashboard");
@@ -28,4 +28,5 @@ public class SignUpDoneController {
             e.printStackTrace();
         }
     }
+
 }
