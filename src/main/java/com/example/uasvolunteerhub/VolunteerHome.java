@@ -12,7 +12,7 @@ public class VolunteerHome extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(VolunteerHome.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 960, 540);
-        stage.setTitle("VHLab5");
+        stage.setTitle("VHLabPBO");
         stage.setScene(scene);
         stage.show();
     }
