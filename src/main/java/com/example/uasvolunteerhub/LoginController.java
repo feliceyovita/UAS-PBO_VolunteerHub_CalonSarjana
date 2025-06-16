@@ -46,6 +46,10 @@ public class LoginController {
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
+                    int userId = rs.getInt("id");
+                    String name = rs.getString("name");
+                    SessionManager.setCurrentUser(userId, name);
+
                     String role = rs.getString("role");
                     Session.currentUserEmail = email;
 

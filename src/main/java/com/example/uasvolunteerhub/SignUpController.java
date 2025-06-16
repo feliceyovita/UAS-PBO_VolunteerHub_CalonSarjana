@@ -54,11 +54,13 @@ public class SignUpController {
             }
 
             // insert new user
-            String insertQuery = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+            String insertQuery = "INSERT INTO users (name, email, password, profile_image) VALUES (?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(insertQuery);
             stmt.setString(1, name);
             stmt.setString(2, email);
-            stmt.setString(3, password); // gunakan hashing jika perlu
+            stmt.setString(3, password);
+            stmt.setString(4, "default_profile.png");
+
 
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {

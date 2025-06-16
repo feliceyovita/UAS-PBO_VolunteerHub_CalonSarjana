@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import com.example.uasvolunteerhub.NavigationUtil;
+
 
 public class VolunteerDashboardController {
 
@@ -273,7 +275,6 @@ public class VolunteerDashboardController {
                 }
             }
 
-            // Jika gagal dari resources, coba dari file path langsung
             File imageFile = new File(imagePath);
             if (imageFile.exists()) {
                 Image image = new Image(imageFile.toURI().toString());
@@ -284,7 +285,6 @@ public class VolunteerDashboardController {
                 }
             }
 
-            // Jika semua gagal, gunakan default image
             loadDefaultImage(imageView);
             System.out.println("Image not found, using default for: " + imagePath);
 
@@ -294,9 +294,6 @@ public class VolunteerDashboardController {
         }
     }
 
-    /**
-     * Load default/placeholder image
-     */
     private void loadDefaultImage(ImageView imageView) {
         try {
             InputStream defaultStream = getClass().getResourceAsStream("ImgActivity/img1.png");
@@ -380,40 +377,24 @@ public class VolunteerDashboardController {
 
     @FXML
     private void handleLogout(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/hello-view.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Volunteer Hub - Login");
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Error loading hello-view.fxml: " + e.getMessage());
-        }
+        NavigationUtil.logout(event);
     }
 
     @FXML
-    private void handleAccount(ActionEvent event) {
-        // Handle account button click
-        System.out.println("Account button clicked");
+    public void handleAccount(ActionEvent event) {
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/account-Volunteer.fxml", "Profile Account");
     }
 
     @FXML
     private void handleRecommendation(ActionEvent event) {
-        // Handle recommendation button click
-        System.out.println("Recommendation button clicked");
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/recommendation-view.fxml", "Volunteer Recommendation");
     }
 
     @FXML
     private void handleHistory(ActionEvent event) {
-        // Handle history button click
-        System.out.println("History button clicked");
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/history-view.fxml", "Activity History");
     }
+
 
     @FXML
     private void handleSearch() {
