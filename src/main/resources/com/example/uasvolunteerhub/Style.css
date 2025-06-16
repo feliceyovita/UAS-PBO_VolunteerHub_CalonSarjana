@@ -1,0 +1,20 @@
+.date-picker {
+    -fx-background-color: #ededed;
+    -fx-background-radius: 8;
+    -fx-padding: 6 10 6 10;
+    -fx-border-color: transparent;
+}
+
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8;
+    -fx-font-size: 12px;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.date-picker .arrow {
+    -fx-background-color: #4CAF50;
+}

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #B2D3C2;" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.AccountVolunteerController">
+   <children>
+      <VBox prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
+         <padding>
+            <Insets bottom="30" left="20" right="20" top="30" />
+         </padding>
+         <children>
+            <Button fx:id="accountBtn" onAction="#handleAccount" graphicTextGap="10" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="Account">
+               <graphic>
+                  <ImageView fitHeight="24" fitWidth="24">
+                     <image>
+                        <Image url="@../../../icon/account.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="recommendationBtn" contentDisplay="LEFT" graphicTextGap="10" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-alignment: center-left;" text="Recommendation">
+               <graphic>
+                  <ImageView fitHeight="24" fitWidth="24">
+                     <image>
+                        <Image url="@../../../icon/recomen.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="historyBtn" contentDisplay="LEFT" graphicTextGap="10" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity">
+               <graphic>
+                  <ImageView fitHeight="24" fitWidth="24">
+                     <image>
+                        <Image url="@../../../icon/add_activity.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="logoutBtn" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleLogout" prefWidth="160.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="Log out">
+               <graphic>
+                  <ImageView fitHeight="24" fitWidth="24">
+                     <image>
+                        <Image url="@../../../icon/log-out.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <VBox.margin>
+                  <Insets top="340.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+      <AnchorPane layoutX="239.0" layoutY="46.0" prefHeight="498.0" prefWidth="688.0" style="-fx-background-color: white; -fx-background-radius: 20;">
+         <children>
+            <Text fill="#216516" layoutX="265.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit your profile" wrappingWidth="161.85223388671875">
+               <font>
+                  <Font name="SansSerif Bold" size="20.0" />
+               </font>
+            </Text>
+            <!-- Label: Name -->
+            <Text fill="#216516" layoutX="27.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" wrappingWidth="161.85223388671875">
+               <font>
+                  <Font name="SansSerif Bold" size="20.0" />
+               </font>
+            </Text>
+            <TextField fx:id="nameField" layoutX="25.0" layoutY="98.0" prefHeight="32.0" prefWidth="634.0" promptText="enter your name" style="-fx-background-color: #EDEDED; -fx-background-radius: 8;" />
+
+            <!-- Label: Email -->
+            <Text fill="#216516" layoutX="29.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="161.85223388671875">
+               <font>
+                  <Font name="SansSerif Bold" size="20.0" />
+               </font>
+            </Text>
+            <TextField fx:id="emailField" layoutX="25.0" layoutY="183.0" prefHeight="32.0" prefWidth="632.0" promptText="enter your email" style="-fx-background-color: #EDEDED; -fx-background-radius: 8;" />
+
+            <!-- Label: Phone Number -->
+            <Text fill="#216516" layoutX="29.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone number" wrappingWidth="161.85223388671875">
+               <font>
+                  <Font name="SansSerif Bold" size="20.0" />
+               </font>
+            </Text>
+            <TextField fx:id="phoneField" layoutX="26.0" layoutY="265.0" prefHeight="32.0" prefWidth="628.0" promptText="enter your number" style="-fx-background-color: #EDEDED; -fx-background-radius: 8;" />
+
+            <!-- Label: Date of Birth -->
+            <Text fill="#216516" layoutX="29.0" layoutY="334.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of birth" wrappingWidth="161.85223388671875">
+               <font>
+                  <Font name="SansSerif Bold" size="20.0" />
+               </font>
+            </Text>
+            <DatePicker fx:id="dobPicker" layoutX="30.0" layoutY="351.0" prefHeight="40.0" prefWidth="623.0" style="-fx-background-color: #EDEDED; -fx-background-radius: 8;" />
+            <Button layoutX="286.0" layoutY="423.0" mnemonicParsing="false" onAction="#handleUpdateProfile" prefHeight="31.0" prefWidth="117.0" style="-fx-background-color: #216516; -fx-background-radius: 50;" text="Update" textFill="WHITE">
+               <font>
+                  <Font name="SansSerif Bold" size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
