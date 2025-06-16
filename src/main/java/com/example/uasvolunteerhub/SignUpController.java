@@ -53,14 +53,13 @@ public class SignUpController {
                 return;
             }
 
-            // insert new user
-            String insertQuery = "INSERT INTO users (name, email, password, profile_image) VALUES (?, ?, ?, ?)";
+            // insert new user - removed profile_image column since it doesn't exist in database
+            String insertQuery = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(insertQuery);
             stmt.setString(1, name);
             stmt.setString(2, email);
             stmt.setString(3, password);
-            stmt.setString(4, "default_profile.png");
-
+            stmt.setString(4, "volunteer"); // Set default role as volunteer
 
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
@@ -80,10 +79,9 @@ public class SignUpController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(AlertType.ERROR, "Error", "Failed to register user.");
+            showAlert(AlertType.ERROR, "Error", "Failed to register user: " + e.getMessage());
         }
     }
-
 
     private void showAlert(AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
@@ -107,5 +105,4 @@ public class SignUpController {
             showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to open login page.");
         }
     }
-
 }
