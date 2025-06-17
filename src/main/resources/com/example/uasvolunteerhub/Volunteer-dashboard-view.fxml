@@ -70,7 +70,7 @@
                     </ImageView>
                 </graphic>
                 <VBox.margin>
-                    <Insets top="340.0" />
+                    <Insets top="280.0" />
                 </VBox.margin>
             </Button>
         </VBox>

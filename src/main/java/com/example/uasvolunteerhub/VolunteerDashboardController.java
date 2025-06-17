@@ -53,6 +53,9 @@ public class VolunteerDashboardController {
     private static final String DB_USER = "root"; // sesuaikan dengan username database Anda
     private static final String DB_PASSWORD = ""; // sesuaikan dengan password database Anda
 
+    // Static variable to store selected activity for detail view
+    private static Activity selectedActivity;
+
     // Activity data model
     public static class Activity {
         private int id;
@@ -96,6 +99,11 @@ public class VolunteerDashboardController {
         public String getTypeOfVolunteer() { return typeOfVolunteer; }
         public double getDonationAmount() { return donationAmount; }
         public String getImage() { return image; }
+    }
+
+    // Static method to get selected activity
+    public static Activity getSelectedActivity() {
+        return selectedActivity;
     }
 
     @FXML
@@ -240,7 +248,7 @@ public class VolunteerDashboardController {
                 "-fx-font-size: 11px; -fx-padding: 5 10;");
 
         // Add click handler for details button
-        detailsBtn.setOnAction(e -> handleActivityDetails(activity));
+        detailsBtn.setOnAction(e -> handleActivityDetails(e, activity));
 
         buttonBox.getChildren().add(detailsBtn);
 
@@ -313,21 +321,26 @@ public class VolunteerDashboardController {
         }
     }
 
-    private void handleActivityDetails(Activity activity) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Activity Details");
-        alert.setHeaderText(activity.getTitle());
-        alert.setContentText(
-                "Location: " + activity.getLocation() + "\n" +
-                        "Date: " + activity.getDate() + "\n" +
-                        "Slots Available: " + activity.getSlot() + "\n" +
-                        "Type: " + activity.getTypeOfVolunteer() + "\n" +
-                        "Benefits: " + activity.getBenefits() + "\n" +
-                        "Description: " + activity.getDescription() + "\n" +
-                        "Contact: " + activity.getContact() + "\n" +
-                        "Donation Amount: $" + String.format("%.2f", activity.getDonationAmount())
-        );
-        alert.showAndWait();
+    private void handleActivityDetails(ActionEvent event, Activity activity) {
+        try {
+            // Navigate to activity detail page
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/activity-detail.fxml"));
+            Parent root = loader.load();
+
+            // Get the controller and set the activity ID
+            ActivityDetailController controller = loader.getController();
+            controller.setActivityId(activity.getId());
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Activity Details - " + activity.getTitle());
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Navigation Error", "Failed to load activity details page: " + e.getMessage());
+        }
     }
 
     private void updateStatistics() {

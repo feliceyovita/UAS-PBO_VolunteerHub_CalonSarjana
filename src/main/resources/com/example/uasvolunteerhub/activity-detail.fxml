@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #B2D3C2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.ActivityDetailController">
+    <left>
+        <VBox prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
+            <padding>
+                <Insets bottom="30" left="20" right="20" top="30" />
+            </padding>
+
+            <!-- Back Button -->
+            <Button fx:id="backBtn" onAction="#handleBack" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+                <graphic>
+                    <ImageView fitHeight="30" fitWidth="30">
+                        <Image url="@../../../icon/back.png" />
+                    </ImageView>
+                </graphic>
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+                <VBox.margin>
+                    <Insets bottom="20" />
+                </VBox.margin>
+            </Button>
+
+            <!-- Account -->
+            <Button fx:id="accountBtn" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleAccount" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="Account">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/account.png" />
+                    </ImageView>
+                </graphic>
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Button>
+
+            <!-- Volunteer Recommendation -->
+            <Button fx:id="recommendationBtn" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleRecommendation" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="Volunteer recommendation">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/recomen.png" />
+                    </ImageView>
+                </graphic>
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+            </Button>
+
+            <!-- History of Activity -->
+            <Button fx:id="historyBtn" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleHistory" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/add_activity.png" />
+                    </ImageView>
+                </graphic>
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+            </Button>
+
+            <!-- Log out -->
+            <Button fx:id="logoutBtn" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleLogout" prefWidth="160.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="Log out">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/log-out.png" />
+                    </ImageView>
+                </graphic>
+                <VBox.margin>
+                    <Insets top="200.0" />
+                </VBox.margin>
+            </Button>
+        </VBox>
+    </left>
+
+    <center>
+        <ScrollPane fx:id="contentScrollPane" fitToWidth="true" hbarPolicy="NEVER" prefHeight="540.0" prefWidth="760.0" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="AS_NEEDED">
+            <!-- Content will be dynamically added by controller -->
+        </ScrollPane>
+    </center>
+</BorderPane>
