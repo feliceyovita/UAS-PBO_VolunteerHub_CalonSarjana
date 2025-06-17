@@ -412,8 +412,35 @@ public class ActivityDetailController {
     }
 
     private void handleRegister(ActionEvent event) {
-        // Implement registration logic here
-        showAlert("Registration", "Registration functionality will be implemented here.");
+        try {
+            // Debug: Print untuk memastikan method dipanggil
+            System.out.println("Register button clicked!");
+            System.out.println("Activity ID: " + (currentActivity != null ? currentActivity.getId() : "null"));
+
+            // Pastikan path FXML sesuai dengan nama file yang sebenarnya
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/RegistrationForm-view.fxml"));
+            Parent root = loader.load();
+
+            // Dapatkan controller dan set activity ID
+            RegistrationFormController controller = loader.getController();
+            if (controller != null && currentActivity != null) {
+                controller.setActivityId(currentActivity.getId());
+                System.out.println("Activity ID set to registration form: " + currentActivity.getId());
+            }
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Register to Activity");
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Navigation Error", "Failed to load registration form: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error", "An unexpected error occurred: " + e.getMessage());
+        }
     }
 
     private void handleDonate(ActionEvent event) {
