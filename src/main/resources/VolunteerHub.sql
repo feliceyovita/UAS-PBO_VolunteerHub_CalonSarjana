@@ -61,12 +61,12 @@ VALUES
 'Ayo ikut bergabung dalam kegiatan bersih-bersih pantai bersama komunitas lokal dan relawan dari seluruh Indonesia!\r\nKegiatan ini tidak hanya membersihkan lingkungan, tetapi juga memberi edukasi kepada wisatawan tentang pentingnya tidak membuang sampah sembarangan.',
 'not donate', NULL, 'img2.png'),  -- Hanya nama file
 
--- Aktivitas 3
+-- Aktivitas 3 - DIUBAH MENJADI DONATE
 (4, 'Tanam Seribu Pohon di Bogor', '2025-07-15',
 'Berpartisipasi dalam penghijauan kota dan meminimalisir dampak pemanasan global.',
 'Gunung Salak, Bogor', '089912345678', 100,
-'Bersama relawan dan organisasi lingkungan, mari kita tanam seribu pohon di kawasan Gunung Salak untuk memulihkan ekosistem dan menambah ruang hijau di sekitar kita.\r\nSetiap pohon yang ditanam menjadi kontribusi nyata untuk masa depan bumi.',
-'not donate', NULL, 'img3.png');  -- Hanya nama file
+'Bersama relawan dan organisasi lingkungan, mari kita tanam seribu pohon di kawasan Gunung Salak untuk memulihkan ekosistem dan menambah ruang hijau di sekitar kita.\r\nSetiap pohon yang ditanam menjadi kontribusi nyata untuk masa depan bumi.\r\nDonasi Anda akan digunakan untuk membeli bibit pohon, peralatan tanam, dan operasional kegiatan.',
+'donate', 50000.00, 'img3.png');  -- Diubah ke 'donate' dengan donation_amount 50000
 
 -- --------------------------------------------------------
 
