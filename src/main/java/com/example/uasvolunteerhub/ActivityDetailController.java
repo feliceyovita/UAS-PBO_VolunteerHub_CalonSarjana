@@ -413,15 +413,12 @@ public class ActivityDetailController {
 
     private void handleRegister(ActionEvent event) {
         try {
-            // Debug: Print untuk memastikan method dipanggil
             System.out.println("Register button clicked!");
             System.out.println("Activity ID: " + (currentActivity != null ? currentActivity.getId() : "null"));
 
-            // Pastikan path FXML sesuai dengan nama file yang sebenarnya
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/RegistrationForm-view.fxml"));
             Parent root = loader.load();
 
-            // Dapatkan controller dan set activity ID
             RegistrationFormController controller = loader.getController();
             if (controller != null && currentActivity != null) {
                 controller.setActivityId(currentActivity.getId());
@@ -444,8 +441,22 @@ public class ActivityDetailController {
     }
 
     private void handleDonate(ActionEvent event) {
-        // Implement donation logic here
-        showAlert("Donation", "Donation functionality will be implemented here.");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/Donation-view.fxml"));
+            Parent donationRoot = loader.load();
+
+            // Optional: Pass data to DonationController if needed
+            // DonationController controller = loader.getController();
+            // controller.setCurrentActivity(currentActivity);
+
+            Scene donationScene = new Scene(donationRoot);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(donationScene);
+            stage.setTitle("Donation Page");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showAlert(String title, String message) {
