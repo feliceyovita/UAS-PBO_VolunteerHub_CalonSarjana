@@ -94,7 +94,7 @@ public class RegistrationFormController {
 
             int userId = rs.getInt("id");
 
-            String insertQuery = "INSERT INTO volunteer (id_user, id_activity, name, email, phone_number, job, age, address, reason_join, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String insertQuery = "INSERT INTO volunteer (id_user, id_activity, name, email, phone_number, job, age, address, reason_join) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
             insertStmt.setInt(1, userId);
             insertStmt.setInt(2, activityId);
@@ -105,7 +105,6 @@ public class RegistrationFormController {
             insertStmt.setInt(7, age);
             insertStmt.setString(8, address);
             insertStmt.setString(9, reason);
-            insertStmt.setString(10, "volunteer");
             insertStmt.executeUpdate();
 
 
