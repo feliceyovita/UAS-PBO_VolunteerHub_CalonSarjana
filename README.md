@@ -22,12 +22,34 @@
 
 ## 🚀 Cara Menjalankan Aplikasi
 
-1. **Clone repositori:**
+1. Clone repositori:
    ```bash
-   git clone https://github.com/chyntiaclaudiaa/UAS-PBO_VolunteerHub_CalonSarjana.git
+   git clone https://github.com/feliceyovita/UAS-PBO_VolunteerHub_CalonSarjana.git
    cd UAS-PBO_VolunteerHub_CalonSarjana
-2. dst..
+
+2. Buka proyek di IDE Java seperti IntelliJ IDEA atau NetBeans
+3. Pastikan sudah mengatur JavaFX dan SQLite dengan benar
+4. Jalankan aplikasi
+
+## 🔐 Info Login
+
+### 👨‍💼 Admin
+| Email            | Password    |
+|------------------|-------------|
+| admin@gmail.com  | admin123    |
+
 ---
+
+### 🙋 Volunteer
+
+Untuk menjadi volunteer:
+1. Lakukan **Sign Up** terlebih dahulu untuk membuat akun
+2. Lakukan **Login**
+3. Lengkapi **profil pribadi**
+
+---
+
+> Jika kamu belum memiliki akun volunteer, silakan daftar melalui halaman **Register** di aplikasi.
 
 ## 🎥 Video Presentasi
 Tonton penjelasan dan demo lengkapnya di YouTube:
