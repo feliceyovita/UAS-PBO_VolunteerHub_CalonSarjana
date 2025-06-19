@@ -11,13 +11,22 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
 
 public class adminHomeController {
 
+    // Existing FXML components
+    @FXML private Button addActivityButton;
+
+    // Dashboard components
     @FXML private TableView<ActivityRow> activityTable;
     @FXML private TableColumn<ActivityRow, String> colActNo;
     @FXML private TableColumn<ActivityRow, String> colActTitle;
@@ -30,8 +39,25 @@ public class adminHomeController {
     @FXML private TableColumn<VolunteerRow, String> colVolActivity;
     @FXML private Label totalVolunteersLabel;
 
+    // Add Activity form components
+    @FXML private TextField titleField;
+    @FXML private TextField locationField;
+    @FXML private DatePicker datePicker;
+    @FXML private TextField contactField;
+    @FXML private TextField benefitsField;
+    @FXML private TextField slotField;
+    @FXML private TextArea descriptionArea;
+    @FXML private RadioButton donateRadio;
+    @FXML private RadioButton notDonateRadio;
+    @FXML private ToggleGroup volunteerTypeGroup;
+    @FXML private TextField donationAmountField; // Field untuk nominal donasi
+    @FXML private ImageView uploadImageView;
+    @FXML private Button browseButton;
+
+    // Variables
     private ObservableList<ActivityRow> activityList = FXCollections.observableArrayList();
     private ObservableList<VolunteerRow> volunteerList = FXCollections.observableArrayList();
+    private File selectedImageFile;
 
     @FXML
     public void initialize() {
@@ -41,13 +67,287 @@ public class adminHomeController {
             return;
         }
 
-        styleTableView(activityTable);
-        styleTableView(volunteerTable);
-        loadActivities();
-        loadVolunteers();
+        // Only initialize tables if they exist (dashboard view)
+        if (activityTable != null && volunteerTable != null) {
+            styleTableView(activityTable);
+            styleTableView(volunteerTable);
+            loadActivities();
+            loadVolunteers();
+            styleTableViewHeaders(activityTable);
+            styleTableViewHeaders(volunteerTable);
+        }
 
-        styleTableViewHeaders(activityTable);
-        styleTableViewHeaders(volunteerTable);
+        // Setup donation field toggle (jika form add activity ada)
+        if (donateRadio != null && notDonateRadio != null && donationAmountField != null) {
+            setupDonationToggle();
+        }
+    }
+
+    // NEW METHOD: Setup Donation Toggle
+    private void setupDonationToggle() {
+        // Listener untuk mengaktifkan/menonaktifkan donation field
+        volunteerTypeGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            if (donateRadio.isSelected()) {
+                donationAmountField.setDisable(false);
+                donationAmountField.setStyle("-fx-border-color: #2E5A3E; -fx-border-radius: 3px; -fx-font-size: 11px;");
+            } else {
+                donationAmountField.setDisable(true);
+                donationAmountField.clear();
+                donationAmountField.setStyle("-fx-border-color: #CCCCCC; -fx-border-radius: 3px; -fx-font-size: 11px;");
+            }
+        });
+
+        // Validasi input donasi - hanya angka
+        donationAmountField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                donationAmountField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
+        // Set initial state
+        donationAmountField.setDisable(!donateRadio.isSelected());
+    }
+
+    // NEW METHOD: Handle Browse Image
+    @FXML
+    private void handleBrowseImage(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Activity Image");
+
+        // Set extension filters
+        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter(
+                "Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp");
+        fileChooser.getExtensionFilters().add(imageFilter);
+
+        // Show open file dialog
+        Stage stage = (Stage) browseButton.getScene().getWindow();
+        selectedImageFile = fileChooser.showOpenDialog(stage);
+
+        if (selectedImageFile != null) {
+            try {
+                // Display selected image in ImageView (optional preview)
+                Image image = new Image(selectedImageFile.toURI().toString());
+                uploadImageView.setImage(image);
+                uploadImageView.setOpacity(1.0); // Make it fully visible
+
+                showAlert("Success", "Image selected: " + selectedImageFile.getName());
+            } catch (Exception e) {
+                showAlert("Error", "Failed to load image: " + e.getMessage());
+                selectedImageFile = null;
+            }
+        }
+    }
+
+    // UPDATED METHOD: Handle Submit Form (dengan donasi)
+    @FXML
+    private void handleSubmit(ActionEvent event) {
+        // Validate form inputs
+        if (!validateForm()) {
+            return;
+        }
+
+        try {
+            // Get form data
+            String title = titleField.getText().trim();
+            String location = locationField.getText().trim();
+            LocalDate date = datePicker.getValue();
+            String contact = contactField.getText().trim();
+            String benefits = benefitsField.getText().trim();
+            int slot = Integer.parseInt(slotField.getText().trim());
+            String description = descriptionArea.getText().trim();
+
+            // Get volunteer type
+            String volunteerType = "";
+            double donationAmount = 0.0;
+
+            if (donateRadio.isSelected()) {
+                volunteerType = "Donate";
+                // Get donation amount jika donate dipilih
+                if (!donationAmountField.getText().trim().isEmpty()) {
+                    donationAmount = Double.parseDouble(donationAmountField.getText().trim());
+                }
+            } else if (notDonateRadio.isSelected()) {
+                volunteerType = "Not Donate";
+                donationAmount = 0.0;
+            }
+
+            // Save to database
+            boolean success = saveActivityToDatabase(title, location, date, contact,
+                    benefits, slot, description, volunteerType, donationAmount);
+
+            if (success) {
+                showAlert("Success", "Activity has been saved successfully!");
+                clearForm();
+
+                // Refresh tables if we're on dashboard
+                if (activityTable != null) {
+                    loadActivities();
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            showAlert("Input Error", "Slot and donation amount must be valid numbers!");
+        } catch (Exception e) {
+            showAlert("Error", "Failed to save activity: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // UPDATED METHOD: Validate Form (dengan validasi donasi)
+    private boolean validateForm() {
+        StringBuilder errors = new StringBuilder();
+
+        if (titleField.getText().trim().isEmpty()) {
+            errors.append("- Title is required\n");
+        }
+        if (locationField.getText().trim().isEmpty()) {
+            errors.append("- Location is required\n");
+        }
+        if (datePicker.getValue() == null) {
+            errors.append("- Date is required\n");
+        }
+        if (contactField.getText().trim().isEmpty()) {
+            errors.append("- Contact is required\n");
+        }
+        if (benefitsField.getText().trim().isEmpty()) {
+            errors.append("- Benefits is required\n");
+        }
+        if (slotField.getText().trim().isEmpty()) {
+            errors.append("- Slot is required\n");
+        } else {
+            try {
+                int slot = Integer.parseInt(slotField.getText().trim());
+                if (slot <= 0) {
+                    errors.append("- Slot must be greater than 0\n");
+                }
+            } catch (NumberFormatException e) {
+                errors.append("- Slot must be a valid number\n");
+            }
+        }
+        if (descriptionArea.getText().trim().isEmpty()) {
+            errors.append("- Description is required\n");
+        }
+        if (volunteerTypeGroup.getSelectedToggle() == null) {
+            errors.append("- Please select volunteer type\n");
+        }
+
+        // Validasi donasi
+        if (donateRadio != null && donateRadio.isSelected()) {
+            String donationText = donationAmountField.getText().trim();
+            if (donationText.isEmpty()) {
+                errors.append("- Donation amount is required when 'Donate' is selected\n");
+            } else {
+                try {
+                    double amount = Double.parseDouble(donationText);
+                    if (amount <= 0) {
+                        errors.append("- Donation amount must be greater than 0\n");
+                    }
+                } catch (NumberFormatException e) {
+                    errors.append("- Donation amount must be a valid number\n");
+                }
+            }
+        }
+
+        if (errors.length() > 0) {
+            showAlert("Validation Error", "Please fix the following errors:\n\n" + errors.toString());
+            return false;
+        }
+
+        return true;
+    }
+
+    // UPDATED METHOD: Save Activity to Database (dengan donasi)
+    private boolean saveActivityToDatabase(String title, String location, LocalDate date,
+                                           String contact, String benefits, int slot,
+                                           String description, String volunteerType, double donationAmount) {
+
+        String sql = """
+            INSERT INTO activity (title, location, date, contact, benefits, slot, description, type_of_volunteer, donation_amount, image)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """;
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, title);
+            stmt.setString(2, location);
+            stmt.setDate(3, Date.valueOf(date));
+            stmt.setString(4, contact);
+            stmt.setString(5, benefits);
+            stmt.setInt(6, slot);
+            stmt.setString(7, description);
+            stmt.setString(8, volunteerType);
+            stmt.setDouble(9, donationAmount); // Set donation amount
+
+            // Handle image path
+            String imagePath = null;
+            if (selectedImageFile != null) {
+                // You might want to copy the file to a specific directory
+                // For now, just store the original path
+                imagePath = selectedImageFile.getAbsolutePath();
+            }
+            stmt.setString(10, imagePath);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            // Debug print
+            System.out.println("Activity saved with donation amount: " + donationAmount);
+
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Database Error", "Failed to save activity to database: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // UPDATED METHOD: Clear Form (dengan clear donation field)
+    private void clearForm() {
+        titleField.clear();
+        locationField.clear();
+        datePicker.setValue(null);
+        contactField.clear();
+        benefitsField.clear();
+        slotField.clear();
+        descriptionArea.clear();
+        volunteerTypeGroup.selectToggle(null);
+        if (donationAmountField != null) {
+            donationAmountField.clear();
+        }
+        uploadImageView.setImage(new Image(getClass().getResourceAsStream("/icon/uploadImage.png")));
+        uploadImageView.setOpacity(0.5);
+        selectedImageFile = null;
+    }
+
+    // EXISTING METHODS (keep all your existing methods)
+    private void navigateToPage(String fxmlPath, ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        Parent root = loader.load();
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    private void handleAdminDashboard(ActionEvent event) {
+        try {
+            navigateToPage("/com/example/uasvolunteerhub/adminHome-view.fxml", event);
+        } catch (IOException e) {
+            showAlert("Navigation Error", "Failed to open Dashboard Admin page: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleAddActivity(ActionEvent event) {
+        try {
+            navigateToPage("/com/example/uasvolunteerhub/addActivity-view.fxml", event);
+        } catch (IOException e) {
+            showAlert("Navigation Error", "Failed to open Add Activity page: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void styleTableView(TableView<?> table) {
@@ -66,12 +366,9 @@ public class adminHomeController {
 
     private void styleTableViewHeaders(TableView<?> tableView) {
         Platform.runLater(() -> {
-            // Background kolom judul
             for (Node header : tableView.lookupAll(".column-header")) {
                 header.setStyle("-fx-background-color: #BFDACC;");
             }
-
-            // Background baris header keseluruhan
             Node headerBg = tableView.lookup(".column-header-background");
             if (headerBg != null) {
                 headerBg.setStyle("-fx-background-color: #BFDACC;");
@@ -93,12 +390,9 @@ public class adminHomeController {
             }
 
             activityTable.setItems(activityList);
-
-            // Setup columns
             colActNo.setCellValueFactory(data -> data.getValue().snProperty());
             colActTitle.setCellValueFactory(data -> data.getValue().titleProperty());
 
-            // Center align SN column
             colActNo.setCellFactory(column -> new TableCell<>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
@@ -108,7 +402,6 @@ public class adminHomeController {
                 }
             });
 
-            // Center align Title column
             colActTitle.setCellFactory(column -> new TableCell<>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
@@ -118,15 +411,12 @@ public class adminHomeController {
                 }
             });
 
-            // Action Column Setup
             colActAction.setCellFactory(param -> new TableCell<ActivityRow, Void>() {
                 private final Button editBtn = new Button("✏ Edit");
                 private final Button delBtn = new Button("🗑 Delete");
                 private final HBox hBox = new HBox(10, editBtn, delBtn);
 
-                // Constructor block
                 {
-                    // Style buttons
                     editBtn.setStyle(
                             "-fx-background-color: #4CAF50; " +
                                     "-fx-text-fill: white; " +
@@ -144,7 +434,6 @@ public class adminHomeController {
 
                     hBox.setAlignment(javafx.geometry.Pos.CENTER);
 
-                    // Button actions dengan proper error handling
                     editBtn.setOnAction(event -> {
                         try {
                             int rowIndex = getIndex();
@@ -196,17 +485,12 @@ public class adminHomeController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/edit-activity.fxml"));
             Parent root = loader.load();
-
-            // Get the controller and pass the activity data
             EditActivityController controller = loader.getController();
             controller.setActivityData(activity.getId());
-
-            // Get current stage and set new scene
             Stage stage = (Stage) activityTable.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Error", "Failed to open edit form: " + e.getMessage());
@@ -214,7 +498,6 @@ public class adminHomeController {
     }
 
     private void handleDeleteActivity(ActivityRow activity) {
-        // Show confirmation dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Activity");
         alert.setHeaderText("Delete Activity: " + activity.getTitle());
@@ -231,26 +514,24 @@ public class adminHomeController {
         Connection conn = null;
         try {
             conn = Database.getConnection();
-            conn.setAutoCommit(false); // Start transaction
+            conn.setAutoCommit(false);
 
-            // First delete volunteers associated with this activity
             try (PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM volunteer WHERE id_activity = ?")) {
                 stmt1.setInt(1, id);
                 stmt1.executeUpdate();
             }
 
-            // Then delete the activity
             try (PreparedStatement stmt2 = conn.prepareStatement("DELETE FROM activity WHERE id = ?")) {
                 stmt2.setInt(1, id);
                 int rowsAffected = stmt2.executeUpdate();
 
                 if (rowsAffected > 0) {
-                    conn.commit(); // Commit transaction
+                    conn.commit();
                     showAlert("Success", "Activity and associated volunteers deleted successfully!");
-                    loadActivities(); // Reload activities table
-                    loadVolunteers(); // Reload volunteers table
+                    loadActivities();
+                    loadVolunteers();
                 } else {
-                    conn.rollback(); // Rollback transaction
+                    conn.rollback();
                     showAlert("Error", "Failed to delete activity. Activity not found.");
                 }
             }
@@ -258,7 +539,7 @@ public class adminHomeController {
         } catch (SQLException e) {
             try {
                 if (conn != null) {
-                    conn.rollback(); // Rollback on error
+                    conn.rollback();
                 }
             } catch (SQLException rollbackEx) {
                 rollbackEx.printStackTrace();
@@ -268,7 +549,7 @@ public class adminHomeController {
         } finally {
             try {
                 if (conn != null) {
-                    conn.setAutoCommit(true); // Reset auto-commit
+                    conn.setAutoCommit(true);
                     conn.close();
                 }
             } catch (SQLException e) {
@@ -320,11 +601,5 @@ public class adminHomeController {
     @FXML
     private void handleBack() {
         System.out.println("Back button clicked");
-        // Implementasi navigasi jika perlu
-    }
-
-    @FXML
-    private void handleLogout(ActionEvent event) {
-        NavigationUtil.logout(event);
     }
 }

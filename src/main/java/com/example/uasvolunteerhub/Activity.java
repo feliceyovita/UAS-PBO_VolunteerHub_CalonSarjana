@@ -1,5 +1,4 @@
 package com.example.uasvolunteerhub;
-import java.math.BigDecimal;
 import java.sql.Date;
 public class Activity {
     private int id;
@@ -11,7 +10,7 @@ public class Activity {
     private Integer slot;
     private String description;
     private String typeOfVolunteer; // maps to "type_of_volunteer" in database
-    private BigDecimal donationAmount;
+    private double donationAmount;
     private String image;
 
     // Constructors
@@ -19,7 +18,7 @@ public class Activity {
 
     public Activity(int id, String title, Date date, String benefits, String location,
                     String contact, Integer slot, String description, String typeOfVolunteer,
-                    BigDecimal donationAmount, String image) {
+                    double donationAmount, String image) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -106,11 +105,11 @@ public class Activity {
         this.typeOfVolunteer = typeOfVolunteer;
     }
 
-    public BigDecimal getDonationAmount() {
+    public double getDonationAmount() {
         return donationAmount;
     }
 
-    public void setDonationAmount(BigDecimal donationAmount) {
+    public void setDonationAmount(double donationAmount) {
         this.donationAmount = donationAmount;
     }
 
