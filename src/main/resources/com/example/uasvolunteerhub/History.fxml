@@ -2,10 +2,16 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #B2D3C2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.HistoryController">
     <left>
@@ -29,11 +35,11 @@
                         <Font name="System Bold" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="recommendationBtn" onAction="#handleRecommendation" style="-fx-background-color: transparent; -fx-font-family: Arial; -fx-font-weight: bold; -fx-alignment: center-left;" text="Recommendation" textFill="WHITE">
+                <Button fx:id="recommendationBtn1" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleRecommendation" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-alignment: center-left;" text="Dashboard" textFill="WHITE">
                     <graphic>
                         <ImageView fitHeight="24" fitWidth="24">
                             <image>
-                                <Image url="@../../../icon/recomen.png" />
+                                <Image url="@../../../icon/dashboard.png" />
                             </image>
                         </ImageView>
                     </graphic>
@@ -41,7 +47,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button fx:id="historyBtn" style="-fx-background-color: transparent; -fx-font-family: Arial; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity" textFill="WHITE">
+                <Button fx:id="historyBtn1" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleHistory" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity">
                     <graphic>
                         <ImageView fitHeight="24" fitWidth="24">
                             <image>
@@ -81,13 +87,9 @@
                             <Font name="SansSerif Bold" size="34.0" />
                         </font>
                     </Text>
-                    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
-                                style="-fx-background-color:transparent;"
-                                fx:id="scrollPane"
-                                pannable="true">
+                    <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" style="-fx-background-color:transparent;" VBox.vgrow="ALWAYS">
                         <content>
-                            <VBox fx:id="historyContainer" fillWidth="true" VBox.vgrow="ALWAYS"
-                                  style="-fx-background-color: transparent;" />
+                            <VBox fx:id="historyContainer" fillWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
                         </content>
                     </ScrollPane>
                 </children>

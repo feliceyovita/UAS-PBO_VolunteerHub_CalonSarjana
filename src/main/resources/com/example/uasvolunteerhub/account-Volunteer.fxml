@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #B2D3C2;" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.AccountVolunteerController">
+<AnchorPane prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #B2D3C2;" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.AccountVolunteerController">
    <children>
       <VBox prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
          <padding>
@@ -23,11 +28,11 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="recommendationBtn" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleRecommendation" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-alignment: center-left;" text="Recommendation">
+            <Button fx:id="recommendationBtn1" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleRecommendation" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-alignment: center-left;" text="Dashboard" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="24" fitWidth="24">
                      <image>
-                        <Image url="@../../../icon/recomen.png" />
+                        <Image url="@../../../icon/dashboard.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -35,7 +40,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="historyBtn" onAction="#handleHistory" contentDisplay="LEFT" graphicTextGap="10" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity">
+            <Button fx:id="historyBtn1" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleHistory" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity">
                <graphic>
                   <ImageView fitHeight="24" fitWidth="24">
                      <image>
