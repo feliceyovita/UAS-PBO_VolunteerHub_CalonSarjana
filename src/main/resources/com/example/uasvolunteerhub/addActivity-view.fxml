@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: B2D3C2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.adminHomeController">
+    <left>
+        <VBox prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
+            <padding>
+                <Insets bottom="30" left="20" right="20" top="30" />
+            </padding>
+
+            <!-- Dashboard -->
+            <Button fx:id="adminDashboardButton" onAction="#handleAdminDashboard" contentDisplay="LEFT" graphicTextGap="10"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-weight: bold;"
+                    text="Dashboard">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/dashboard.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+
+            <!-- Manage Activities -->
+            <Button contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Manage Activities">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/manage_activity.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <!-- Add Activity -->
+            <Button contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-weight: bold;" text="Add Activity">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../icon/add_activity.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+        </VBox>
+    </left>
+
+
+    <center>
+        <VBox spacing="10" style="-fx-background-color: #B2D3C2;">
+            <padding>
+                <Insets bottom="10" left="20" right="20" top="10" />
+            </padding>
+
+            <!-- Header -->
+            <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2E5A3E;" text="Add Activity">
+                <font>
+                    <Font name="Arial Bold" size="28.0" />
+                </font>
+            </Label>
+
+            <!-- Form Content -->
+            <VBox spacing="5">
+                <!-- Title and Location Row -->
+                <HBox spacing="10">
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #2E5A3E;" text="Title" />
+                        <TextField fx:id="titleField" prefHeight="35" style="-fx-background-color: rgba(255,255,255,0.8); -fx-border-color: #8BC5A3; -fx-border-radius: 5;" />
+                    </VBox>
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #2E5A3E;" text="Location" />
+                        <TextField fx:id="locationField" prefHeight="35" style="-fx-background-color: rgba(255,255,255,0.8); -fx-border-color: #8BC5A3; -fx-border-radius: 5;" />
+                    </VBox>
+                </HBox>
+
+                <!-- Date and Contact Row -->
+                <HBox spacing="10">
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #2E5A3E;" text="Date" />
+                        <DatePicker fx:id="datePicker" prefHeight="35" style="-fx-background-color: rgba(255,255,255,0.8); -fx-border-color: #8BC5A3; -fx-border-radius: 5;" />
+                    </VBox>
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #2E5A3E;" text="Contact" />
+                        <TextField fx:id="contactField" prefHeight="35" style="-fx-background-color: rgba(255,255,255,0.8); -fx-border-color: #8BC5A3; -fx-border-radius: 5;" />
+                    </VBox>
+                </HBox>
+
+                <!-- Benefits and Slot Row -->
+                <HBox spacing="10">
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #2E5A3E;" text="Benefits" />
+                        <TextField fx:id="benefitsField" prefHeight="35" style="-fx-background-color: rgba(255,255,255,0.8); -fx-border-color: #8BC5A3; -fx-border-radius: 5;" />
+                    </VBox>
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #2E5A3E;" text="Slot" />
+                        <TextField fx:id="slotField" prefHeight="35" style="-fx-background-color: rgba(255,255,255,0.8); -fx-border-color: #8BC5A3; -fx-border-radius: 5;" />
+                    </VBox>
+                </HBox>
+
+                <!-- Description and Type of Volunteer Row -->
+                <HBox spacing="10">
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #2E5A3E;" text="Description" />
+                        <TextArea fx:id="descriptionArea" prefHeight="120" prefRowCount="4" promptText="Start writing here ..." style="-fx-background-color: rgba(255,255,255,0.8); -fx-border-color: #8BC5A3; -fx-border-radius: 5;" wrapText="true" />
+                    </VBox>
+                    <VBox spacing="5" prefWidth="250">
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #2E5A3E;" text="Type of Volunteer" />
+                        <VBox spacing="10">
+                            <fx:define>
+                                <ToggleGroup fx:id="volunteerTypeGroup" />
+                            </fx:define>
+
+                            <!-- Radio buttons untuk donasi -->
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <RadioButton fx:id="donateRadio" style="-fx-text-fill: #2E5A3E;" text="Donate" toggleGroup="$volunteerTypeGroup" />
+                                <RadioButton fx:id="notDonateRadio" style="-fx-text-fill: #2E5A3E;" text="Not Donate" toggleGroup="$volunteerTypeGroup" />
+                            </HBox>
+
+                            <!-- Input field untuk nominal donasi -->
+                            <VBox spacing="5">
+                                <Label text="Nominal Donasi:" style="-fx-text-fill: #2E5A3E; -fx-font-size: 12px;" />
+                                <TextField fx:id="donationAmountField"
+                                           promptText="Input nominal (Rupiah)"
+                                           prefWidth="200"
+                                           style="-fx-border-color: #2E5A3E; -fx-border-radius: 5px;" />
+                            </VBox>
+                        </VBox>
+
+                        <!-- Upload Image Section -->
+                        <VBox spacing="10">
+                            <Label style="-fx-font-weight: bold; -fx-text-fill: #2E5A3E;" text="Upload Image" />
+                            <VBox alignment="CENTER" spacing="10" style="-fx-background-color: rgba(255,255,255,0.6); -fx-border-color: #8BC5A3; -fx-border-style: dashed; -fx-border-radius: 5; -fx-padding: 15;">
+                                <ImageView fx:id="uploadImageView" fitHeight="40" fitWidth="40" opacity="0.5">
+                                    <Image url="@../../../icon/uploadImage.png" />
+                                </ImageView>
+                                <Label style="-fx-text-fill: #888888;" text="Drag&amp;drop files here" />
+                                <Button fx:id="browseButton" onAction="#handleBrowseImage" style="-fx-background-color: #7BAE8A; -fx-text-fill: white; -fx-border-radius: 5;" text="Browse" />
+                            </VBox>
+                        </VBox>
+                    </VBox>
+                </HBox>
+
+                <!-- Submit Button -->
+                <HBox alignment="CENTER_RIGHT">
+                    <Button fx:id="submitButton" onAction="#handleSubmit" prefHeight="40" prefWidth="100" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5;" text="Submit" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

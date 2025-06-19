@@ -494,9 +494,10 @@ public class ActivityDetailController {
         NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/account-Volunteer.fxml", "Profile Account");
     }
 
+
     @FXML
     private void handleRecommendation(ActionEvent event) {
-        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/recommendation-view.fxml", "Volunteer Recommendation");
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/Volunteer-Dashboard-view.fxml", "Volunteer Dashboard");
     }
 
     @FXML

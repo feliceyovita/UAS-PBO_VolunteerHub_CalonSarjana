@@ -19,15 +19,6 @@
                 <Insets bottom="30" left="20" right="20" top="30" />
             </padding>
 
-            <!-- Account -->
-            <Button graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Account">
-                <graphic>
-                    <ImageView fitHeight="24" fitWidth="24">
-                        <Image url="@../../../icon/account.png" />
-                    </ImageView>
-                </graphic>
-            </Button>
-
             <!-- Dashboard -->
             <Button contentDisplay="LEFT" graphicTextGap="10"
                     style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-family: 'Arial'; -fx-font-weight: bold;"
@@ -50,7 +41,7 @@
             </Button>
 
             <!-- Add Activity -->
-            <Button contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Add Activity">
+            <Button fx:id="addActivityButton" onAction="#handleAddActivity" contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Add Activity">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@../../../icon/add_activity.png" />

@@ -400,7 +400,7 @@ public class VolunteerDashboardController {
 
     @FXML
     private void handleRecommendation(ActionEvent event) {
-        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/recommendation-view.fxml", "Volunteer Recommendation");
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/Volunteer-dashboard.fxml", "Volunteer Recommendation");
     }
 
     @FXML

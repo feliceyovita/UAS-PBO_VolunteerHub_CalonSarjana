@@ -1,5 +1,6 @@
 package com.example.uasvolunteerhub;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -140,5 +141,14 @@ public class RegistrationFormController {
                 }
             }
         });
+    }
+    @FXML
+    public void handleAccount(ActionEvent event) {
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/account-Volunteer.fxml", "Profile Account");
+    }
+
+    @FXML
+    private void handleRecommendation(ActionEvent event) {
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/Volunteer-dashboard-view.fxml", "Volunteer Recommendation");
     }
 }
