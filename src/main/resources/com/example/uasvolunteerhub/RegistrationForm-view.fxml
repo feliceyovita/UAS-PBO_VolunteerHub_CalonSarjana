@@ -41,7 +41,7 @@
                </cursor>
                 </Button>
 
-                <Button fx:id="historyBtn" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity">
+                <Button fx:id="historyBtn" onAction="#handleHistory" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity">
                     <graphic>
                         <ImageView fitHeight="24" fitWidth="24">
                             <image>

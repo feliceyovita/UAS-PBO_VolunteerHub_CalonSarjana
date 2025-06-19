@@ -47,6 +47,11 @@ public class AccountVolunteerController {
     }
 
     @FXML
+    private void handleHistory(ActionEvent event) {
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/History.fxml", "Activity History");
+    }
+
+    @FXML
     public void initialize() {
         int userId = SessionManager.getUserId();
         try (Connection conn = Database.getConnection()) {

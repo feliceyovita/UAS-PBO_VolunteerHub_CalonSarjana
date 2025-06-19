@@ -11,6 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class DonationController {
     @FXML
@@ -30,18 +33,45 @@ public class DonationController {
 
     @FXML
     private void handleHistory(ActionEvent event) {
-        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/history-view.fxml", "Activity History");
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/History.fxml", "Activity History");
+    }
+
+    private int activityId;
+
+    public void setActivityId(int activityId) {
+        this.activityId = activityId;
     }
 
     @FXML
     private void handleSubmitDonation(ActionEvent event) {
+        try (Connection conn = Database.getConnection()) {
+            int userId = Session.currentUserId;
+
+            String insertQuery = """
+                INSERT INTO volunteer (id_user, id_activity, name, email, phone_number, job, age, address, reason_join, type)
+                VALUES (?, ?, '-', '-', '-', '-', 0, '-', '-', 'donation')
+            """;
+
+            PreparedStatement stmt = conn.prepareStatement(insertQuery);
+            stmt.setInt(1, userId);
+            stmt.setInt(2, activityId);
+            stmt.executeUpdate();
+
+            showSuccessAlert(event);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to record donation: " + e.getMessage());
+        }
+    }
+
+    private void showSuccessAlert(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Terima Kasih!");
         alert.setHeaderText(null);
         alert.setContentText("Donasi telah disalurkan, terima kasih!");
 
         alert.showAndWait().ifPresent(response -> {
-            // Setelah klik OK, pindah ke halaman dashboard
             if (response == ButtonType.OK) {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/Volunteer-dashboard-view.fxml"));
@@ -56,5 +86,13 @@ public class DonationController {
                 }
             }
         });
+    }
+
+    private void showAlert(String title, String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 }

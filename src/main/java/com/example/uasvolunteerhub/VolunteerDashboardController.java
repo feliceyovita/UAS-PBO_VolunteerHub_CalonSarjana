@@ -405,9 +405,8 @@ public class VolunteerDashboardController {
 
     @FXML
     private void handleHistory(ActionEvent event) {
-        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/history-view.fxml", "Activity History");
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/History.fxml", "Activity History");
     }
-
 
     @FXML
     private void handleSearch() {
