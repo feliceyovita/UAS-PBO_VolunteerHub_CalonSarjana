@@ -20,9 +20,7 @@
             </padding>
 
             <!-- Dashboard -->
-            <Button contentDisplay="LEFT" graphicTextGap="10"
-                    style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-family: 'Arial'; -fx-font-weight: bold;"
-                    text="Dashboard">
+            <Button fx:id="dashboardButton" onAction="#handleAdminDashboard" contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-family: 'Arial'; -fx-font-weight: bold;" text="Dashboard">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@../../../icon/dashboard.png" />
@@ -32,7 +30,7 @@
 
 
             <!-- Manage Activities -->
-            <Button contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Manage Activities">
+            <Button fx:id="manageActivitiesButton" onAction="#handleManageActivities" contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Manage Activities">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@../../../icon/manage_activity.png" />

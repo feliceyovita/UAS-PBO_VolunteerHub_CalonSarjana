@@ -349,6 +349,15 @@ public class adminHomeController {
             e.printStackTrace();
         }
     }
+    @FXML
+    private void handleManageActivities(ActionEvent event) {
+        try {
+            navigateToPage("/com/example/uasvolunteerhub/manageActivity-view.fxml", event);
+        } catch (IOException e) {
+            showAlert("Navigation Error", "Failed to open Manage Activity page: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     private void styleTableView(TableView<?> table) {
         table.setStyle(

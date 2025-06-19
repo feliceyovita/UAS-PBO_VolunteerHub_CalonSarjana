@@ -178,72 +178,178 @@ public class EditActivityController {
 
     @FXML
     private void handleSave() {
+        // DEBUG: Print method call
+        System.out.println("handleSave() called - Activity ID: " + activityId);
+
         if (!validateForm()) {
+            System.out.println("Form validation failed");
             return;
         }
 
-        String updateQuery = """
-            UPDATE activity SET 
-                title = ?, 
-                date = ?, 
-                benefits = ?, 
-                location = ?, 
-                contact = ?, 
-                slot = ?, 
-                description = ?, 
-                type_of_volunteer = ?, 
-                donation_amount = ?
-                """ + (selectedImageFile != null ? ", image = ?" : "") + " WHERE id = ?";
+        // FIX 1: Pastikan activityId valid
+        if (activityId <= 0) {
+            showAlert("Error", "Invalid activity ID. Cannot update activity.");
+            System.out.println("Invalid activityId: " + activityId);
+            return;
+        }
 
-        try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
+        // FIX 2: Perbaiki query dengan proper formatting
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("UPDATE activity SET ");
+        queryBuilder.append("title = ?, ");
+        queryBuilder.append("date = ?, ");
+        queryBuilder.append("benefits = ?, ");
+        queryBuilder.append("location = ?, ");
+        queryBuilder.append("contact = ?, ");
+        queryBuilder.append("slot = ?, ");
+        queryBuilder.append("description = ?, ");
+        queryBuilder.append("type_of_volunteer = ?, ");
+        queryBuilder.append("donation_amount = ?");
 
+        if (selectedImageFile != null) {
+            queryBuilder.append(", image = ?");
+        }
+
+        queryBuilder.append(" WHERE id = ?");
+
+        String updateQuery = queryBuilder.toString();
+        System.out.println("Update Query: " + updateQuery);
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        FileInputStream fis = null;
+
+        try {
+            conn = Database.getConnection();
+            conn.setAutoCommit(false);
+
+            stmt = conn.prepareStatement(updateQuery);
             int paramIndex = 1;
 
-            stmt.setString(paramIndex++, titleField.getText().trim());
-            stmt.setDate(paramIndex++, Date.valueOf(datePicker.getValue()));
-            stmt.setString(paramIndex++, benefitsField.getText().trim().isEmpty() ? null : benefitsField.getText().trim());
-            stmt.setString(paramIndex++, locationField.getText().trim().isEmpty() ? null : locationField.getText().trim());
-            stmt.setString(paramIndex++, contactField.getText().trim().isEmpty() ? null : contactField.getText().trim());
+            String title = (titleField != null) ? titleField.getText().trim() : "";
+            stmt.setString(paramIndex++, title);
+            System.out.println("Title: " + title);
 
-            if (slotField.getText().trim().isEmpty()) {
-                stmt.setNull(paramIndex++, Types.INTEGER);
+            LocalDate selectedDate = (datePicker != null) ? datePicker.getValue() : null;
+            if (selectedDate != null) {
+                stmt.setDate(paramIndex++, Date.valueOf(selectedDate));
+                System.out.println("Date: " + selectedDate);
             } else {
-                stmt.setInt(paramIndex++, Integer.parseInt(slotField.getText().trim()));
+                stmt.setNull(paramIndex++, Types.DATE);
             }
 
-            stmt.setString(paramIndex++, descriptionArea.getText().trim().isEmpty() ? null : descriptionArea.getText().trim());
+            String benefits = (benefitsField != null && !benefitsField.getText().trim().isEmpty())
+                    ? benefitsField.getText().trim() : null;
+            stmt.setString(paramIndex++, benefits);
+            System.out.println("Benefits: " + benefits);
 
-            String volunteerType = (donateRadio != null && donateRadio.isSelected()) ? "donate" : "not donate";
+            String location = (locationField != null && !locationField.getText().trim().isEmpty())
+                    ? locationField.getText().trim() : null;
+            stmt.setString(paramIndex++, location);
+            System.out.println("Location: " + location);
+
+            String contact = (contactField != null && !contactField.getText().trim().isEmpty())
+                    ? contactField.getText().trim() : null;
+            stmt.setString(paramIndex++, contact);
+            System.out.println("Contact: " + contact);
+
+            // Handle slot field
+            if (slotField != null && !slotField.getText().trim().isEmpty()) {
+                try {
+                    int slot = Integer.parseInt(slotField.getText().trim());
+                    stmt.setInt(paramIndex++, slot);
+                    System.out.println("Slot: " + slot);
+                } catch (NumberFormatException e) {
+                    stmt.setNull(paramIndex++, Types.INTEGER);
+                    System.out.println("Slot: null (invalid number)");
+                }
+            } else {
+                stmt.setNull(paramIndex++, Types.INTEGER);
+                System.out.println("Slot: null (empty)");
+            }
+
+            String description = (descriptionArea != null && !descriptionArea.getText().trim().isEmpty())
+                    ? descriptionArea.getText().trim() : null;
+            stmt.setString(paramIndex++, description);
+            System.out.println("Description: " + description);
+
+            // FIX 5: Perbaiki logic volunteer type
+            String volunteerType = "not donate"; // default
+            if (donateRadio != null && donateRadio.isSelected()) {
+                volunteerType = "donate";
+            }
             stmt.setString(paramIndex++, volunteerType);
+            System.out.println("Volunteer Type: " + volunteerType);
 
-            if (donateRadio != null && donateRadio.isSelected() && donationField != null && !donationField.getText().trim().isEmpty()) {
-                stmt.setBigDecimal(paramIndex++, new BigDecimal(donationField.getText().trim()));
+            // Handle donation amount
+            if ("donate".equals(volunteerType) && donationField != null && !donationField.getText().trim().isEmpty()) {
+                try {
+                    BigDecimal donationAmount = new BigDecimal(donationField.getText().trim());
+                    stmt.setBigDecimal(paramIndex++, donationAmount);
+                    System.out.println("Donation Amount: " + donationAmount);
+                } catch (NumberFormatException e) {
+                    stmt.setNull(paramIndex++, Types.DECIMAL);
+                    System.out.println("Donation Amount: null (invalid number)");
+                }
             } else {
                 stmt.setNull(paramIndex++, Types.DECIMAL);
+                System.out.println("Donation Amount: null");
             }
 
-            // Handle image upload if new image is selected
+            // Handle image upload
             if (selectedImageFile != null) {
-                try (FileInputStream fis = new FileInputStream(selectedImageFile)) {
-                    stmt.setBinaryStream(paramIndex++, fis, (int) selectedImageFile.length());
-                }
+                fis = new FileInputStream(selectedImageFile);
+                stmt.setBinaryStream(paramIndex++, fis, (int) selectedImageFile.length());
+                System.out.println("Image: " + selectedImageFile.getName());
             }
 
+            // Set WHERE clause parameter
             stmt.setInt(paramIndex, activityId);
+            System.out.println("WHERE id = " + activityId);
 
+            // FIX 6: Execute update dengan proper error handling
+            System.out.println("Executing update...");
             int rowsAffected = stmt.executeUpdate();
+            System.out.println("Rows affected: " + rowsAffected);
 
             if (rowsAffected > 0) {
+                // FIX 7: Commit transaction
+                conn.commit();
+                System.out.println("Transaction committed successfully");
                 showAlert("Success", "Activity updated successfully!");
                 handleBack();
             } else {
-                showAlert("Error", "Failed to update activity. Please try again.");
+                conn.rollback();
+                System.out.println("No rows affected - rolling back");
+                showAlert("Error", "No activity found with ID: " + activityId);
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
+            System.err.println("SQLException: " + e.getMessage());
             e.printStackTrace();
-            showAlert("Error", "Failed to update activity: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // FIX 8: Proper resource cleanup
+            try {
+                if (fis != null) {
+                    fis.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.setAutoCommit(true); // Reset auto-commit
+                    conn.close();
+                }
+                System.out.println("Resources cleaned up");
+            } catch (SQLException | IOException e) {
+                System.err.println("Error during resource cleanup: " + e.getMessage());
+            }
         }
     }
 

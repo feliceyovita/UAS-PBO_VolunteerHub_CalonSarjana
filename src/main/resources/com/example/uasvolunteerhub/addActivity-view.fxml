@@ -35,7 +35,7 @@
 
 
             <!-- Manage Activities -->
-            <Button contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Manage Activities">
+            <Button fx:id="manageActivities" onAction="#handleManageActivities" contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Manage Activities">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@../../../icon/manage_activity.png" />
@@ -44,7 +44,7 @@
             </Button>
 
             <!-- Add Activity -->
-            <Button contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-weight: bold;" text="Add Activity">
+            <Button fx:id="addActivityButton" onAction="#handleAddActivity" contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-weight: bold;" text="Add Activity">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@../../../icon/add_activity.png" />
