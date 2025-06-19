@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -29,6 +30,9 @@ public class SignUpController {
 
     @FXML
     private Label loginLinkLabel;
+
+    @FXML
+    private Button backBtn;
 
     @FXML
     protected void handleSignUp() {
@@ -80,6 +84,26 @@ public class SignUpController {
         } catch (Exception e) {
             e.printStackTrace();
             showAlert(AlertType.ERROR, "Error", "Failed to register user: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleBack() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 960, 540);
+            Stage stage = new Stage();
+            stage.setTitle("VHLabPBO");
+            stage.setScene(scene);
+            stage.show();
+
+            // Tutup window yang sekarang
+            Stage currentStage = (Stage) backBtn.getScene().getWindow();
+            currentStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading hello-view: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to open volunteer home page: " + e.getMessage());
         }
     }
 
