@@ -25,7 +25,7 @@ public class DonationController {
 
     @FXML
     private void handleRecommendation(ActionEvent event) {
-        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/recommendation-view.fxml", "Volunteer Recommendation");
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/Volunteer-dashboard-view.fxml", "Volunteer Recommendation");
     }
 
     @FXML

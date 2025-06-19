@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #B2D3C2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.RegistrationFormController">
+<AnchorPane prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #B2D3C2;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.RegistrationFormController">
     <children>
         <!-- Sidebar -->
         <VBox layoutX="0.0" layoutY="0.0" prefHeight="540.0" prefWidth="200.0" spacing="20.0" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
@@ -22,7 +15,7 @@
                 <Insets bottom="30" left="20" right="20" top="30" />
             </padding>
             <children>
-                <Button fx:id="accountBtn" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="Account">
+                <Button fx:id="accountBtn" onAction="#handleAccount" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="Account">
                     <graphic>
                         <ImageView fitHeight="24" fitWidth="24">
                             <image>
@@ -30,9 +23,12 @@
                             </image>
                         </ImageView>
                     </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
                 </Button>
 
-                <Button fx:id="recommendationBtn" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="Recommendation">
+                <Button fx:id="recommendationBtn" onAction="#handleRecommendation" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="Recommendation">
                     <graphic>
                         <ImageView fitHeight="24" fitWidth="24">
                             <image>
@@ -40,6 +36,9 @@
                             </image>
                         </ImageView>
                     </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
                 </Button>
 
                 <Button fx:id="historyBtn" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity">
@@ -50,6 +49,9 @@
                             </image>
                         </ImageView>
                     </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
                 </Button>
 
                 <!-- Spacer untuk mendorong logout ke bawah -->
@@ -63,6 +65,9 @@
                             </image>
                         </ImageView>
                     </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
                 </Button>
             </children>
         </VBox>
@@ -124,7 +129,10 @@
 
                 <HBox alignment="CENTER">
                     <children>
-                        <Button fx:id="submitBtn" onAction="#handleSubmit" prefWidth="120.0" style="-fx-background-color: #216516; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" text="Submit" />
+                        <Button fx:id="submitBtn" onAction="#handleSubmit" prefWidth="120.0" style="-fx-background-color: #216516; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;" text="Submit">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
                     </children>
                     <VBox.margin>
                         <Insets top="20.0" />

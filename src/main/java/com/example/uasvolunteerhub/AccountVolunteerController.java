@@ -42,6 +42,11 @@ public class AccountVolunteerController {
     }
 
     @FXML
+    private void handleRecommendation(ActionEvent event) {
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/Volunteer-Dashboard-view.fxml", "Volunteer Dashboard");
+    }
+
+    @FXML
     public void initialize() {
         int userId = SessionManager.getUserId();
         try (Connection conn = Database.getConnection()) {
