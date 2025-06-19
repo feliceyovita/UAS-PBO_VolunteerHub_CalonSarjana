@@ -56,10 +56,10 @@
             <font>
                 <Font name="SansSerif" size="12.0" />
             </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
         </Label>
-      <Button layoutX="40.0" layoutY="34.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="35.0" style="-fx-background-color: white; -fx-background-radius: 100;" />
+        <Button layoutX="40.0" layoutY="34.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="35.0" style="-fx-background-color: white; -fx-background-radius: 100;" />
     </children>
 </AnchorPane>
