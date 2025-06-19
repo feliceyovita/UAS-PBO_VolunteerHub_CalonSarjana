@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #B2D3C2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.HistoryController">
+    <left>
+        <VBox prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
+            <padding>
+                <Insets bottom="30" left="20" right="20" top="30" />
+            </padding>
+            <children>
+                <Button fx:id="accountBtn" onAction="#handleAccount" style="-fx-background-color: transparent; -fx-font-family: Arial; -fx-font-weight: bold; -fx-alignment: center-left;" text="Account" textFill="WHITE">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <image>
+                                <Image url="@../../../icon/account.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Button>
+                <Button fx:id="recommendationBtn" onAction="#handleRecommendation" style="-fx-background-color: transparent; -fx-font-family: Arial; -fx-font-weight: bold; -fx-alignment: center-left;" text="Recommendation" textFill="WHITE">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <image>
+                                <Image url="@../../../icon/recomen.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <Button fx:id="historyBtn" style="-fx-background-color: transparent; -fx-font-family: Arial; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity" textFill="WHITE">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <image>
+                                <Image url="@../../../icon/add_activity.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <Region VBox.vgrow="ALWAYS" />
+                <Button fx:id="logoutBtn" onAction="#handleLogout" style="-fx-background-color: transparent; -fx-font-family: Arial; -fx-font-weight: bold; -fx-alignment: center-left;" text="Log out" textFill="WHITE">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <image>
+                                <Image url="@../../../icon/log-out.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <StackPane>
+            <VBox alignment="TOP_CENTER" fillWidth="true" spacing="20" VBox.vgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="30" left="30" right="30" top="30" />
+                </padding>
+                <children>
+                    <Text fill="#216516" text="Volunteer History">
+                        <font>
+                            <Font name="SansSerif Bold" size="34.0" />
+                        </font>
+                    </Text>
+                    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                                style="-fx-background-color:transparent;"
+                                fx:id="scrollPane"
+                                pannable="true">
+                        <content>
+                            <VBox fx:id="historyContainer" fillWidth="true" VBox.vgrow="ALWAYS"
+                                  style="-fx-background-color: transparent;" />
+                        </content>
+                    </ScrollPane>
+                </children>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>

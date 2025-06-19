@@ -5,4 +5,5 @@ public class Session {
     public static boolean justRegistered = false;
     public static String currentUserEmail = "";
     public static Dashboard loggedInDashboard;
+    public static int currentUserId = -1;
 }

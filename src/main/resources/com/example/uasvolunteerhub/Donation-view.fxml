@@ -30,7 +30,7 @@
                     </graphic>
                     <cursor><Cursor fx:constant="HAND" /></cursor>
                 </Button>
-                <Button fx:id="historyBtn" style="-fx-background-color: transparent; -fx-font-family: Arial; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity" textFill="WHITE">
+                <Button fx:id="historyBtn" onAction="#handleHistory" style="-fx-background-color: transparent; -fx-font-family: Arial; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity" textFill="WHITE">
                     <graphic>
                         <ImageView fitHeight="24" fitWidth="24">
                             <image><Image url="@../../../icon/add_activity.png" /></image>

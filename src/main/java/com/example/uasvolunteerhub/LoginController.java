@@ -49,6 +49,9 @@ public class LoginController {
                     int userId = rs.getInt("id");
                     String name = rs.getString("name");
                     SessionManager.setCurrentUser(userId, name);
+                    Session.currentUserId = userId;
+
+                    System.out.println("User berhasil login dengan ID: " + userId);
 
                     String role = rs.getString("role");
                     Session.currentUserEmail = email;

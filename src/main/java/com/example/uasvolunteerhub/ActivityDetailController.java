@@ -443,17 +443,16 @@ public class ActivityDetailController {
     private void handleDonate(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/Donation-view.fxml"));
-            Parent donationRoot = loader.load();
+            Parent root = loader.load();
 
-            // Optional: Pass data to DonationController if needed
-            // DonationController controller = loader.getController();
-            // controller.setCurrentActivity(currentActivity);
+            DonationController donationController = loader.getController();
+            donationController.setActivityId(currentActivity.getId());
 
-            Scene donationScene = new Scene(donationRoot);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(donationScene);
+            stage.setScene(new Scene(root));
             stage.setTitle("Donation Page");
             stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -502,6 +501,6 @@ public class ActivityDetailController {
 
     @FXML
     private void handleHistory(ActionEvent event) {
-        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/history-view.fxml", "Activity History");
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/History.fxml", "Activity History");
     }
 }

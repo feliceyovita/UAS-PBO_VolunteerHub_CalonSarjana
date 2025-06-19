@@ -42,7 +42,7 @@
             </Button>
 
             <!-- History of Activity -->
-            <Button fx:id="historyBtn" contentDisplay="LEFT" graphicTextGap="10" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity">
+            <Button fx:id="historyBtn" onAction="#handleHistory" contentDisplay="LEFT" graphicTextGap="10" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@../../../icon/add_activity.png" />
