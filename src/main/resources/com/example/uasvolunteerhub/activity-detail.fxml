@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #B2D3C2;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.ActivityDetailController">
+<BorderPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #B2D3C2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.ActivityDetailController">
     <left>
         <VBox prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
             <padding>
@@ -43,24 +46,24 @@
                     <Font name="System Bold" size="12.0" />
                 </font>
             </Button>
-
-            <!-- Volunteer Recommendation -->
-            <Button fx:id="recommendationBtn" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleRecommendation" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="Recommendation">
+            <Button fx:id="recommendationBtn1" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleRecommendation" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-alignment: center-left;" text="Dashboard" textFill="WHITE">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
-                        <Image url="@../../../icon/recomen.png" />
+                        <image>
+                            <Image url="@../../../icon/dashboard.png" />
+                        </image>
                     </ImageView>
                 </graphic>
                 <cursor>
                     <Cursor fx:constant="HAND" />
                 </cursor>
             </Button>
-
-            <!-- History of Activity -->
-            <Button fx:id="historyBtn" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleHistory" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity">
+            <Button fx:id="historyBtn1" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleHistory" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
-                        <Image url="@../../../icon/add_activity.png" />
+                        <image>
+                            <Image url="@../../../icon/add_activity.png" />
+                        </image>
                     </ImageView>
                 </graphic>
                 <cursor>
@@ -78,9 +81,9 @@
                 <VBox.margin>
                     <Insets top="200.0" />
                 </VBox.margin>
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor>
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
             </Button>
         </VBox>
     </left>
