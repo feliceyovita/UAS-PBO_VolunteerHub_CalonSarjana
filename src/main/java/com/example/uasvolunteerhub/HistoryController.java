@@ -57,11 +57,13 @@ public class HistoryController implements Initializable {
         // Cek apakah currentUserId valid
         if (Session.currentUserId <= 0) {
             System.out.println("ERROR: currentUserId tidak valid!");
+            showNoDataMessage();
             return;
         }
 
+        // Query tanpa kolom 'type' karena tidak ada di tabel volunteer
         String query = """
-            SELECT a.id, a.title, a.date, a.location, v.type AS type
+            SELECT a.id, a.title, a.date, a.location, a.type_of_volunteer
             FROM activity a
             JOIN volunteer v ON a.id = v.id_activity
             WHERE v.id_user = ?
@@ -81,20 +83,7 @@ public class HistoryController implements Initializable {
                 while (debugRs.next()) {
                     System.out.println("Volunteer ID: " + debugRs.getInt("id") +
                             ", Activity ID: " + debugRs.getInt("id_activity") +
-                            ", Type: " + debugRs.getString("type"));
-                }
-            }
-
-            // Debug: Cek data di tabel activity
-            String activityQuery = "SELECT * FROM activity";
-            try (PreparedStatement activityStmt = conn.prepareStatement(activityQuery)) {
-                ResultSet activityRs = activityStmt.executeQuery();
-
-                System.out.println("=== Data di tabel activity ===");
-                while (activityRs.next()) {
-                    System.out.println("Activity ID: " + activityRs.getInt("id") +
-                            ", Title: " + activityRs.getString("title") +
-                            ", Date: " + activityRs.getString("date"));
+                            ", Name: " + debugRs.getString("name"));
                 }
             }
 
@@ -109,6 +98,7 @@ public class HistoryController implements Initializable {
 
                 if (!rs.isBeforeFirst()) {
                     System.out.println("❌ ResultSet kosong: tidak ada data ditemukan untuk user ID: " + Session.currentUserId);
+                    showNoDataMessage();
                 } else {
                     System.out.println("✅ ResultSet punya data!");
                 }
@@ -122,17 +112,17 @@ public class HistoryController implements Initializable {
                     String title = rs.getString("title");
                     String dateStr = rs.getString("date");
                     String location = rs.getString("location");
-                    String historyType = rs.getString("type");
+                    String volunteerType = rs.getString("type_of_volunteer"); // Ambil dari tabel activity
 
                     System.out.println("ID: " + id);
                     System.out.println("Title: " + title);
                     System.out.println("Date String: " + dateStr);
                     System.out.println("Location: " + location);
-                    System.out.println("Type: " + historyType);
+                    System.out.println("Volunteer Type: " + volunteerType);
 
                     try {
                         LocalDate date = LocalDate.parse(dateStr);
-                        HBox card = createCard(id, date, title, location, historyType);
+                        HBox card = createCard(id, date, title, location, volunteerType);
                         Region line = new Region();
                         line.setPrefHeight(1);
                         line.setStyle("-fx-background-color: #5c8f5c;");
@@ -147,51 +137,89 @@ public class HistoryController implements Initializable {
 
                 if (!hasData) {
                     System.out.println("WARNING: No history data found for user " + Session.currentUserId);
-
-                    // Tambahkan pesan jika tidak ada data
-                    Text noDataText = new Text("Belum ada history aktivitas");
-                    noDataText.setFont(Font.font("Arial", 14));
-                    historyContainer.getChildren().add(noDataText);
+                    showNoDataMessage();
                 }
             }
 
         } catch (SQLException e) {
             System.out.println("SQL ERROR: " + e.getMessage());
             e.printStackTrace();
+            showNoDataMessage();
         }
 
         System.out.println("=== DEBUG: Selesai loadVolunteerHistory ===");
     }
 
-    private HBox createCard(int activityId, LocalDate date, String title, String location, String historyType) {
+    private void showNoDataMessage() {
+        VBox noDataBox = new VBox(10);
+        noDataBox.setAlignment(Pos.CENTER);
+        noDataBox.setPadding(new Insets(50));
+
+        Text noDataText = new Text("Anda belum melakukan volunteer");
+        noDataText.setFont(Font.font("Arial", 18));
+        noDataText.setStyle("-fx-fill: #216516; -fx-font-weight: bold;");
+
+        Text suggestionText = new Text("Silakan daftar di aktivitas volunteer yang tersedia");
+        suggestionText.setFont(Font.font("Arial", 14));
+        suggestionText.setStyle("-fx-fill: #666666;");
+
+        Button goToDashboardBtn = new Button("Lihat Aktivitas Volunteer");
+        goToDashboardBtn.setStyle("-fx-background-color: #216516; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 10 20;");
+        goToDashboardBtn.setCursor(javafx.scene.Cursor.HAND);
+        goToDashboardBtn.setOnAction(e -> {
+            try {
+                NavigationUtil.goTo(e, "/com/example/uasvolunteerhub/Volunteer-dashboard-view.fxml", "Volunteer Dashboard");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        noDataBox.getChildren().addAll(noDataText, suggestionText, goToDashboardBtn);
+        historyContainer.getChildren().add(noDataBox);
+    }
+
+    private HBox createCard(int activityId, LocalDate date, String title, String location, String volunteerType) {
         HBox card = new HBox(20);
         card.setPadding(new Insets(10));
         card.setAlignment(Pos.CENTER_LEFT);
-        card.setStyle("-fx-background-color: #B2D3C2;");
+        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
         card.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(card, Priority.ALWAYS);
 
+        // Date Box
         VBox dateBox = new VBox();
+        dateBox.setAlignment(Pos.CENTER);
+        dateBox.setStyle("-fx-background-color: #216516; -fx-background-radius: 8; -fx-padding: 10;");
         Text day = new Text(String.valueOf(date.getDayOfMonth()));
-        day.setFont(Font.font("Arial", 16));
-        Text monthYear = new Text(date.format(DateTimeFormatter.ofPattern("MMM, yyyy")));
-        monthYear.setFont(Font.font("Arial", 11));
+        day.setFont(Font.font("Arial", 20));
+        day.setStyle("-fx-fill: white; -fx-font-weight: bold;");
+        Text monthYear = new Text(date.format(DateTimeFormatter.ofPattern("MMM yyyy")));
+        monthYear.setFont(Font.font("Arial", 12));
+        monthYear.setStyle("-fx-fill: white;");
         dateBox.getChildren().addAll(day, monthYear);
-        dateBox.setPrefWidth(60);
+        dateBox.setPrefWidth(70);
 
-        VBox detailBox = new VBox(3);
+        // Detail Box
+        VBox detailBox = new VBox(5);
         Text titleText = new Text(title);
-        titleText.setFont(Font.font("Arial", 15));
-        Text locationText = new Text("Location: " + location);
-        locationText.setFont(Font.font("Arial", 12));
-        Text typeText = new Text("Type: " + historyType);
-        typeText.setFont(Font.font("Arial", 12));
+        titleText.setFont(Font.font("Arial", 16));
+        titleText.setStyle("-fx-fill: #216516; -fx-font-weight: bold;");
+
+        Text locationText = new Text("📍 " + location);
+        locationText.setFont(Font.font("Arial", 13));
+        locationText.setStyle("-fx-fill: #666666;");
+
+        Text typeText = new Text("🎯 " + (volunteerType.equals("donate") ? "Donation Required" : "No Donation"));
+        typeText.setFont(Font.font("Arial", 13));
+        typeText.setStyle("-fx-fill: #666666;");
+
         detailBox.getChildren().addAll(titleText, locationText, typeText);
         detailBox.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(detailBox, Priority.ALWAYS);
 
+        // Detail Button
         Button detailBtn = new Button("Detail");
-        detailBtn.setPrefWidth(100);
+        detailBtn.setPrefWidth(80);
         detailBtn.setStyle("-fx-background-color: #216516; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-weight: bold;");
         detailBtn.setCursor(javafx.scene.Cursor.HAND);
         detailBtn.setOnAction(e -> openActivityDetail(activityId));
@@ -199,7 +227,6 @@ public class HistoryController implements Initializable {
         card.getChildren().addAll(dateBox, detailBox, detailBtn);
         return card;
     }
-
 
     private void openActivityDetail(int activityId) {
         try {
