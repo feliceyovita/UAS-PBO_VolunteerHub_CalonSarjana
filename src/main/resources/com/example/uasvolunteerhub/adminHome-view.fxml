@@ -92,7 +92,7 @@
                     <font>
                         <Font name="SansSerif Bold" size="12.0" />
                     </font></Label>
-                <TableView fx:id="activityTable" prefHeight="200" style="-fx-background-color: transparent; -fx-border-color: 1111bc;">
+                <TableView fx:id="activityTable" prefHeight="200" style="-fx-background-color: transparent; -fx-border-color: #1111bc;">
                     <columns>
                         <TableColumn fx:id="colActNo" prefWidth="38.666656494140625" text="SN" />
                         <TableColumn fx:id="colActTitle" prefWidth="426.0" text="Activities" />
