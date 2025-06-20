@@ -12,11 +12,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+
 
 public class manageActivityController implements Initializable {
 
@@ -109,22 +113,18 @@ public class manageActivityController implements Initializable {
                 "-fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);");
         card.setPadding(new Insets(0));
 
-        // Activity Image
         ImageView imageView = new ImageView();
         imageView.setFitWidth(200);
         imageView.setFitHeight(120);
         imageView.setPreserveRatio(false);
-        imageView.setStyle("-fx-border-radius: 8 8 0 0; -fx-background-radius: 8 8 0 0;");
-        String imageName = activity.getImage();
-        try {
-            // Use a placeholder or default image if activity image is not available
-            String fullPath = "/ImgActivity/" + imageName;
-            Image image = new Image(getClass().getResourceAsStream(fullPath));
-            imageView.setImage(image);
-        } catch (Exception e) {
-            // Use a default placeholder image
-            imageView.setStyle("-fx-background-color: #e0e0e0;");
-        }
+
+        Rectangle clip = new Rectangle(200, 120);
+        clip.setArcWidth(10);
+        clip.setArcHeight(10);
+        imageView.setClip(clip);
+
+        loadActivityImage(imageView, activity);
+
 
         // Content container
         VBox content = new VBox(8);
@@ -155,26 +155,25 @@ public class manageActivityController implements Initializable {
         Label startDateLabel = new Label("• Start date: " + startDate);
         startDateLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #333;");
 
-        // Price/Donation
-        Label priceLabel;
+        Label donationTargetLabel;
         if (activity.getDonationAmount() > 0) {
-            priceLabel = new Label("• Price: $" + (int)activity.getDonationAmount() + " / person");
+            donationTargetLabel = new Label("• Donation Target: Rp" + String.format("%,.0f", activity.getDonationAmount()));
         } else {
-            priceLabel = new Label("• Price: Free");
+            donationTargetLabel = new Label("• No donation needed");
         }
-        priceLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #333;");
+        donationTargetLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #333;");
 
-        Label donationLabel;
-        if (activity.getDonationAmount() > 0) {
-            donationLabel = new Label("• No donation");
+        Label donationInfoLabel;
+
+        if ("donate".equalsIgnoreCase(activity.getTypeOfVolunteer()) && activity.getDonationAmount() > 0) {
+            donationInfoLabel = new Label("• Donation Target: Rp" + String.format("%,.0f", activity.getDonationAmount()));
         } else {
-            donationLabel = new Label("• Open for donation");
+            donationInfoLabel = new Label("• No donation needed");
         }
-        donationLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #333;");
+        donationInfoLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #333;");
 
-        details.getChildren().addAll(slotsLabel, purposeLabel, startDateLabel, priceLabel, donationLabel);
+        details.getChildren().addAll(slotsLabel, purposeLabel, startDateLabel, donationInfoLabel);
 
-        // Button Container
         HBox buttonContainer = new HBox(10);
 
         // Edit Button
@@ -191,6 +190,57 @@ public class manageActivityController implements Initializable {
         card.getChildren().addAll(imageView, content);
 
         return card;
+    }
+
+
+    private void loadActivityImage(ImageView imageView, Activity activity) {
+    String imagePath = activity.getImage();
+
+        if (imagePath == null || imagePath.trim().isEmpty()) {
+            loadDefaultImage(imageView);
+            return;
+        }
+
+        try {
+            // Coba load dari resources dengan path yang benar
+            String resourcePath = "/ImgActivity/" + imagePath;
+            InputStream imageStream = getClass().getResourceAsStream(resourcePath);
+
+            if (imageStream != null) {
+                Image image = new Image(imageStream);
+                if (!image.isError()) {
+                    imageView.setImage(image);
+                    System.out.println("Successfully loaded image: " + resourcePath);
+                    return;
+                }
+            }
+
+            File imageFile = new File(imagePath);
+            if (imageFile.exists()) {
+                Image image = new Image(imageFile.toURI().toString());
+                if (!image.isError()) {
+                    imageView.setImage(image);
+                    System.out.println("Successfully loaded image from file: " + imagePath);
+                    return;
+                }
+            }
+
+            loadDefaultImage(imageView);
+            System.out.println("Image not found, using default for: " + imagePath);
+
+        } catch (Exception e) {
+            System.err.println("Error loading image for activity '" + activity.getTitle() + "': " + e.getMessage());
+            loadDefaultImage(imageView);
+        }
+    }
+
+    private void loadDefaultImage(ImageView imageView) {
+        try {
+            Image defaultImage = new Image(getClass().getResourceAsStream("/ImgActivity/default-placeholder.png"));
+            imageView.setImage(defaultImage);
+        } catch (Exception e) {
+            System.err.println("Failed to load default image: " + e.getMessage());
+        }
     }
 
     // Method untuk get activity by ID (untuk keperluan edit)

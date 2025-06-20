@@ -11,10 +11,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.layout.Region?>
 <BorderPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: B2D3C2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.manageActivityController">
     <left>
         <VBox prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
@@ -53,7 +53,7 @@
             <graphic>
                <ImageView fitHeight="24" fitWidth="24">
                   <image>
-                     <Image url="@../../../icon/log-out.png" />
+                     <Image url="@../../../icon/add_activity.png" />
                   </image>
                </ImageView>
             </graphic>
@@ -86,7 +86,7 @@
                 </Label>
 
                 <HBox alignment="CENTER_LEFT" spacing="10">
-                    <TextField fx:id="searchField" prefHeight="40.0" prefWidth="635.0" promptText="Search your Activity here..." style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-padding: 10;" />
+                    <TextField fx:id="searchField" prefHeight="40.0" prefWidth="652.0" promptText="Search your Activity here..." style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-padding: 10;" />
                     <Button fx:id="searchButton" onAction="#handleSearch" style="-fx-background-color: #2d5016; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5; -fx-background-radius: 5; -fx-cursor: hand; -fx-padding: 10 15;">
                         <graphic>
                             <ImageView fitHeight="16" fitWidth="16">
