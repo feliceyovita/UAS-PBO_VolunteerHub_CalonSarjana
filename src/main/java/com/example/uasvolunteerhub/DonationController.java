@@ -47,9 +47,10 @@ public class DonationController {
         try (Connection conn = Database.getConnection()) {
             int userId = Session.currentUserId;
 
+            // PERBAIKAN: Hapus kolom 'type' dari query karena tidak ada di database
             String insertQuery = """
-                INSERT INTO volunteer (id_user, id_activity, name, email, phone_number, job, age, address, reason_join, type)
-                VALUES (?, ?, '-', '-', '-', '-', 0, '-', '-', 'donation')
+                INSERT INTO volunteer (id_user, id_activity, name, email, phone_number, job, age, address, reason_join)
+                VALUES (?, ?, 'Donatur', '-', '-', '-', 0, '-', 'Donation contribution')
             """;
 
             PreparedStatement stmt = conn.prepareStatement(insertQuery);
