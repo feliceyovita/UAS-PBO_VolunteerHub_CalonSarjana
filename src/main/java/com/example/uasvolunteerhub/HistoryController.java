@@ -203,7 +203,12 @@ public class HistoryController implements Initializable {
 
         // Detail Box
         VBox detailBox = new VBox(5);
-        Text titleText = new Text(title);
+        String modifiedTitle = title;
+        if ("donate".equalsIgnoreCase(volunteerType)) {
+            modifiedTitle += " (donation)";
+        }
+        Text titleText = new Text(modifiedTitle);
+
         titleText.setFont(Font.font("Arial", 16));
         titleText.setStyle("-fx-fill: #216516; -fx-font-weight: bold;");
 

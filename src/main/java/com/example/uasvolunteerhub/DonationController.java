@@ -47,15 +47,24 @@ public class DonationController {
         try (Connection conn = Database.getConnection()) {
             int userId = Session.currentUserId;
 
-            // PERBAIKAN: Hapus kolom 'type' dari query karena tidak ada di database
+            String titleQuery = "SELECT title FROM activity WHERE id = ?";
+            PreparedStatement titleStmt = conn.prepareStatement(titleQuery);
+            titleStmt.setInt(1, activityId);
+            ResultSet rs = titleStmt.executeQuery();
+
+            String donationActivityTitle = "Donation contribution";
+            if (rs.next()) {
+                donationActivityTitle = rs.getString("title") + " (donation)";
+            }
+
             String insertQuery = """
                 INSERT INTO volunteer (id_user, id_activity, name, email, phone_number, job, age, address, reason_join)
-                VALUES (?, ?, 'Donatur', '-', '-', '-', 0, '-', 'Donation contribution')
+                VALUES (?, ?, 'Donatur', '-', '-', '-', 0, '-', ?)
             """;
-
             PreparedStatement stmt = conn.prepareStatement(insertQuery);
             stmt.setInt(1, userId);
             stmt.setInt(2, activityId);
+            stmt.setString(3, donationActivityTitle);
             stmt.executeUpdate();
 
             showSuccessAlert(event);
