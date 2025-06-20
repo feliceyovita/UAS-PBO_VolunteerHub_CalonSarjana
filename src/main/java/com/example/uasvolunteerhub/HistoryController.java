@@ -57,7 +57,6 @@ public class HistoryController implements Initializable {
         // Cek apakah currentUserId valid
         if (Session.currentUserId <= 0) {
             System.out.println("ERROR: currentUserId tidak valid!");
-            showNoDataMessage();
             return;
         }
 
@@ -151,9 +150,12 @@ public class HistoryController implements Initializable {
     }
 
     private void showNoDataMessage() {
+        historyContainer.getChildren().clear(); // Hapus semua dulu biar tidak dobel
+
         VBox noDataBox = new VBox(10);
         noDataBox.setAlignment(Pos.CENTER);
         noDataBox.setPadding(new Insets(50));
+        VBox.setVgrow(noDataBox, Priority.ALWAYS); // Agar bisa "mengisi" ruang kosong
 
         Text noDataText = new Text("Anda belum melakukan volunteer");
         noDataText.setFont(Font.font("Arial", 18));

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -13,6 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.layout.Region?>
 <BorderPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: B2D3C2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.manageActivityController">
     <left>
         <VBox prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
@@ -21,9 +23,7 @@
             </padding>
 
             <!-- Dashboard -->
-            <Button fx:id="dashboardButton" onAction="#handleAdminDashboard" contentDisplay="LEFT" graphicTextGap="10"
-                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"
-                    text="Dashboard">
+            <Button fx:id="dashboardButton" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleAdminDashboard" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Dashboard">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@../../../icon/dashboard.png" />
@@ -32,7 +32,7 @@
             </Button>
 
             <!-- Manage Activities -->
-            <Button contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-weight: bold; -fx-border-radius: 5; -fx-background-radius: 5;" text="Manage Activities">
+            <Button contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5; -fx-background-radius: 5;" text="Manage Activities">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@../../../icon/manage_activity.png" />
@@ -41,15 +41,26 @@
             </Button>
 
             <!-- Add Activity -->
-            <Button fx:id="addActivityButton" onAction="#handleAddActivity" contentDisplay="LEFT" graphicTextGap="10"
-                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"
-                    text="Add Activity">
+            <Button fx:id="addActivityButton" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleAddActivity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Add Activity">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@../../../icon/add_activity.png" />
                     </ImageView>
                 </graphic>
             </Button>
+            <Region VBox.vgrow="ALWAYS" />
+         <Button fx:id="LogoutBtn" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleLogout" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Logout">
+            <graphic>
+               <ImageView fitHeight="24" fitWidth="24">
+                  <image>
+                     <Image url="@../../../icon/log-out.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </Button>
         </VBox>
     </left>
 
@@ -74,12 +85,9 @@
                     </font>
                 </Label>
 
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <TextField fx:id="searchField" promptText="Search your Activity here..."
-                               style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-padding: 10;"
-                               prefWidth="400" />
-                    <Button fx:id="searchButton" onAction="#handleSearch"
-                            style="-fx-background-color: #2d5016; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5; -fx-background-radius: 5; -fx-cursor: hand; -fx-padding: 10 15;">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <TextField fx:id="searchField" prefHeight="40.0" prefWidth="635.0" promptText="Search your Activity here..." style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-padding: 10;" />
+                    <Button fx:id="searchButton" onAction="#handleSearch" style="-fx-background-color: #2d5016; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5; -fx-background-radius: 5; -fx-cursor: hand; -fx-padding: 10 15;">
                         <graphic>
                             <ImageView fitHeight="16" fitWidth="16">
                                 <Image url="@../../../icon/search.png" />
@@ -91,7 +99,7 @@
 
             <!-- Activities Grid -->
             <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
-                <FlowPane fx:id="activitiesFlowPane" hgap="20" vgap="20" prefWidth="680">
+                <FlowPane fx:id="activitiesFlowPane" hgap="20" prefWidth="680" vgap="20">
                     <padding>
                         <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
