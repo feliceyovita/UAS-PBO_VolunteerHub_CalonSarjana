@@ -11,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -188,15 +190,17 @@ public class VolunteerDashboardController {
 
     private VBox createActivityCard(Activity activity) {
         VBox card = new VBox();
-        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; " +
-                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
+        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; " + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
         card.setPrefWidth(220);
 
-        // Image
         ImageView imageView = new ImageView();
-        imageView.setFitHeight(120);
         imageView.setFitWidth(220);
+        imageView.setFitHeight(120);
         imageView.setPreserveRatio(false);
+
+        SVGPath clip = new SVGPath();
+        clip.setContent("M0,10 Q0,0 10,0 L215,0 Q220,0 220,10 L220,120 L0,120 Z");
+        imageView.setClip(clip);
 
         // Load image dengan perbaikan
         loadActivityImage(imageView, activity);
@@ -231,7 +235,7 @@ public class VolunteerDashboardController {
         benefitsLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #666666;");
 
         String donationText = activity.getDonationAmount() > 0 ?
-                "• Donation: $" + String.format("%.2f", activity.getDonationAmount()) :
+                "• Donation: Rp" + String.format("%.2f", activity.getDonationAmount()) :
                 "• No donation required";
         Label donationLabel = new Label(donationText);
         donationLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #666666;");
@@ -258,9 +262,6 @@ public class VolunteerDashboardController {
         return card;
     }
 
-    /**
-     * Method terpisah untuk loading image dengan error handling yang lebih baik
-     */
     private void loadActivityImage(ImageView imageView, Activity activity) {
         String imagePath = activity.getImage();
 

@@ -143,19 +143,12 @@ public class EditActivityController {
 
     @FXML
     private void handleTypeChange() {
-        if (donationBox != null) {
-            if (donateRadio != null && donateRadio.isSelected()) {
-                // Show donation box
-                donationBox.setVisible(true);
-                donationBox.setManaged(true);
-            } else {
-                // Hide donation box
-                donationBox.setVisible(false);
-                donationBox.setManaged(false);
-                if (donationField != null) {
-                    donationField.clear();
-                }
-            }
+        if (donateRadio != null && donateRadio.isSelected()) {
+            donationField.setDisable(false);
+            donationField.setPromptText("Enter amount (Rp)");
+        } else {
+            donationField.setDisable(true);
+            donationField.clear();
         }
     }
 

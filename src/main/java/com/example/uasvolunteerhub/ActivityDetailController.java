@@ -239,15 +239,15 @@ public class ActivityDetailController {
 
         // Application deadline (you can add this field to database if needed)
         Label deadlineLabel = new Label("Application deadline: 25th September, 2023");
-        deadlineLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #2E7D32;");
+        deadlineLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #2E7D32; -fx-font-weight: bold");
 
         // Start date
         Label startDateLabel = new Label("Start date: " + currentActivity.getDate());
-        startDateLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #2E7D32;");
+        startDateLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #2E7D32; -fx-font-weight: bold");
 
         // Contact information
         Label contactLabel = new Label("Contact information: " + currentActivity.getContact());
-        contactLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #2E7D32;");
+        contactLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #2E7D32; -fx-font-weight: bold");
 
         detailsBox.getChildren().addAll(deadlineLabel, startDateLabel, contactLabel);
         return detailsBox;
@@ -272,15 +272,10 @@ public class ActivityDetailController {
             Label moneyIcon = new Label("💰");
             moneyIcon.setStyle("-fx-font-size: 14px;");
 
-            Label totalNeededLabel = new Label("Total Needed $" + String.format("%.0f", currentActivity.getDonationAmount()));
+            Label totalNeededLabel = new Label("Total Needed Rp " + String.format("%.0f", currentActivity.getDonationAmount()));
             totalNeededLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #333333; -fx-font-weight: bold;");
 
             donationAmountBox.getChildren().addAll(moneyIcon, totalNeededLabel);
-
-            // Progress indicator
-            Label progressLabel = new Label("17% funded");
-            progressLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #2E7D32; -fx-background-color: #E8F5E8; " +
-                    "-fx-background-radius: 10; -fx-padding: 4 12; -fx-font-weight: bold;");
 
             // Buttons section
             HBox buttonSection = new HBox();
@@ -295,7 +290,7 @@ public class ActivityDetailController {
 
             buttonSection.getChildren().addAll(registerBtn, donateBtn);
 
-            statusSection.getChildren().addAll(donationStatusLabel, donationAmountBox, progressLabel, buttonSection);
+            statusSection.getChildren().addAll(donationStatusLabel, donationAmountBox, buttonSection);
 
         } else {
             // Not open for donation

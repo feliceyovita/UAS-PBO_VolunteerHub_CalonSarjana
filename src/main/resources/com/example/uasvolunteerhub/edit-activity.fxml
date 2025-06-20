@@ -48,14 +48,24 @@
                             <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                 <children>
                                     <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Title" />
-                                    <TextField fx:id="titleField" prefHeight="35.0" promptText="" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" />
+                                    <TextField fx:id="titleField" prefHeight="35.0" promptText="" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;">
+                              <VBox.margin>
+                                 <Insets />
+                              </VBox.margin>
+                           </TextField>
                                 </children>
+                        <HBox.margin>
+                           <Insets top="-25.0" />
+                        </HBox.margin>
                             </VBox>
                             <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                 <children>
                                     <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Location" />
                                     <TextField fx:id="locationField" prefHeight="35.0" promptText="" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" />
                                 </children>
+                        <HBox.margin>
+                           <Insets top="-25.0" />
+                        </HBox.margin>
                             </VBox>
                         </children>
                     </HBox>
@@ -63,67 +73,85 @@
                     <!-- Second Row: Date and Contact -->
                     <HBox spacing="20.0">
                         <children>
-                            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                            <VBox prefHeight="79.0" prefWidth="167.0" spacing="5.0" HBox.hgrow="ALWAYS">
                                 <children>
                                     <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Date" />
-                                    <DatePicker fx:id="datePicker" prefHeight="35.0" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4;" />
+                                    <DatePicker fx:id="datePicker" prefHeight="35.0" prefWidth="428.0" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4;">
+                              <VBox.margin>
+                                 <Insets />
+                              </VBox.margin></DatePicker>
                                 </children>
                             </VBox>
-                            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                            <VBox prefHeight="79.0" prefWidth="167.0" spacing="5.0" HBox.hgrow="ALWAYS">
                                 <children>
                                     <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Contact" />
-                                    <TextField fx:id="contactField" prefHeight="35.0" promptText="" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 17;" />
+                                    <TextField fx:id="contactField" prefHeight="35.0" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 0 10 0 10;" />
                                 </children>
                             </VBox>
                         </children>
                     </HBox>
 
-                    <!-- Third Row: Benefits and Type of Volunteer -->
+                    <!-- BARIS 2: Benefits dan Slot -->
                     <HBox spacing="20.0">
                         <children>
+                            <!-- VBox 1: Benefits -->
                             <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                 <children>
                                     <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Benefits" />
-                                    <TextField fx:id="benefitsField" prefHeight="35.0" promptText="" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" />
+                                    <TextField fx:id="benefitsField" prefHeight="35.0" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;">
+                              <VBox.margin>
+                                 <Insets />
+                              </VBox.margin></TextField>
                                 </children>
+                        <HBox.margin>
+                           <Insets top="-25.0" />
+                        </HBox.margin>
                             </VBox>
+
+                            <!-- VBox 2: Slot -->
                             <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                                 <children>
-                                    <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Type of Volunteer" />
-                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="30.0" style="-fx-padding: -40;">
-                                        <children>
-                                            <RadioButton fx:id="notDonateRadio" mnemonicParsing="false" onAction="#handleTypeChange" prefHeight="18.0" prefWidth="87.0" selected="true" style="-fx-text-fill: #333333;" text="Not Donate">
-                                    <toggleGroup>
-                                                    <ToggleGroup fx:id="volunteerTypeGroup" />
-                                    </toggleGroup>
-                                    <HBox.margin>
-                                       <Insets left="40.0" />
-                                    </HBox.margin></RadioButton>
-                                            <RadioButton fx:id="donateRadio" maxWidth="70.0" mnemonicParsing="false" onAction="#handleTypeChange" prefHeight="18.0" prefWidth="61.0" style="-fx-text-fill: #333333;" text="Donate" toggleGroup="$volunteerTypeGroup">
-                                    <HBox.margin>
-                                       <Insets />
-                                    </HBox.margin>
-                                            </RadioButton>
-                                        </children>
-                                    </HBox>
+                                    <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Slot" />
+                                    <TextField fx:id="slotField" prefHeight="35.0" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" />
                                 </children>
+                        <HBox.margin>
+                           <Insets top="-25.0" />
+                        </HBox.margin>
                             </VBox>
                         </children>
                     </HBox>
 
-                    <!-- Fourth Row: Description and Upload Image -->
+                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                        <children>
+                            <Label text="Type of Volunteer" style="-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: normal;" prefWidth="120" />
+                            <RadioButton fx:id="donateRadio" text="Donate" onAction="#handleTypeChange">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="volunteerTypeGroup" />
+                                </toggleGroup>
+                            </RadioButton>
+                            <RadioButton fx:id="notDonateRadio" text="Not Donate" selected="true" toggleGroup="$volunteerTypeGroup" onAction="#handleTypeChange" />
+                            <TextField fx:id="donationField" promptText="Nominal Donasi (Rp)" prefWidth="190" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 8;" />
+                        </children>
+                    </HBox>
+
                     <HBox alignment="TOP_LEFT" spacing="20.0">
                         <children>
-                            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                            <VBox prefHeight="153.0" prefWidth="424.0" spacing="5.0" HBox.hgrow="ALWAYS">
                                 <children>
                                     <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Description" />
-                                    <TextArea fx:id="descriptionArea" prefHeight="120.0" promptText="Start writing here..." style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" wrapText="true" />
+                                    <TextArea fx:id="descriptionArea" prefHeight="197.0" prefWidth="614.0" promptText="Start writing here..." style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" wrapText="true">
+                              <VBox.margin>
+                                 <Insets />
+                              </VBox.margin></TextArea>
                                 </children>
+                        <HBox.margin>
+                           <Insets top="-10.0" />
+                        </HBox.margin>
                             </VBox>
                             <VBox prefWidth="250.0" spacing="5.0">
                                 <children>
                                     <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Upload Image" />
-                                    <VBox alignment="CENTER" prefHeight="120.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-border-style: dashed;">
+                                    <VBox alignment="CENTER" prefHeight="123.0" prefWidth="331.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-border-style: dashed;">
                                         <children>
                                             <Label style="-fx-font-size: 24px; -fx-text-fill: #CCCCCC;" text="📁" />
                                             <Label fx:id="dragLabel" style="-fx-font-size: 12px; -fx-text-fill: #999999;" text="Drag&amp;Drop files here" textAlignment="CENTER" />
@@ -134,27 +162,20 @@
                                         </padding>
                                     </VBox>
                                 </children>
+                        <HBox.margin>
+                           <Insets top="-10.0" />
+                        </HBox.margin>
                             </VBox>
                         </children>
                     </HBox>
 
-                    <!-- Donation Amount Field (hidden by default) -->
-                    <VBox fx:id="donationBox" managed="false" spacing="20.0" visible="false">
-                        <children>
-                            <VBox prefWidth="300.0" spacing="5.0">
-                                <children>
-                                    <Label style="-fx-font-weight: normal; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Donation Amount" />
-                                    <TextField fx:id="donationField" prefHeight="35.0" promptText="Enter amount (e.g., 50000)" style="-fx-background-color: white; -fx-border-color: #D0D0D0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" />
-                                </children>
-                            </VBox>
-                            <Region HBox.hgrow="ALWAYS" />
-                        </children>
-                    </VBox>
-
                     <!-- Action Button -->
                     <HBox alignment="CENTER_RIGHT" spacing="15.0">
                         <children>
-                            <Button fx:id="doneButton" mnemonicParsing="false" onAction="#handleSave" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #28A745; -fx-text-fill: white; -fx-background-radius: 4; -fx-cursor: hand; -fx-font-weight: normal;" text="Done" />
+                            <Button fx:id="doneButton" mnemonicParsing="false" onAction="#handleSave" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #28A745; -fx-text-fill: white; -fx-background-radius: 4; -fx-cursor: hand; -fx-font-weight: normal;" text="Done">
+                        <HBox.margin>
+                           <Insets top="-10.0" />
+                        </HBox.margin></Button>
                         </children>
                     </HBox>
 
