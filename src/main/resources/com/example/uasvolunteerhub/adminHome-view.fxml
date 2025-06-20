@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.layout.Region?>
 <BorderPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: B2D3C2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.adminHomeController">
     <left>
         <VBox prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
@@ -20,32 +21,54 @@
             </padding>
 
             <!-- Dashboard -->
-            <Button fx:id="dashboardButton" onAction="#handleAdminDashboard" contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-family: 'Arial'; -fx-font-weight: bold;" text="Dashboard">
+            <Button fx:id="dashboardButton" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleAdminDashboard" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Arial'; -fx-font-weight: bold;" text="Dashboard" textFill="WHITE">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@../../../icon/dashboard.png" />
                     </ImageView>
                 </graphic>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
             </Button>
 
 
             <!-- Manage Activities -->
-            <Button fx:id="manageActivitiesButton" onAction="#handleManageActivities" contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Manage Activities">
+            <Button fx:id="manageActivitiesButton" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleManageActivities" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Manage Activities">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@../../../icon/manage_activity.png" />
                     </ImageView>
                 </graphic>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
             </Button>
 
             <!-- Add Activity -->
-            <Button fx:id="addActivityButton" onAction="#handleAddActivity" contentDisplay="LEFT" graphicTextGap="10" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Add Activity">
+            <Button fx:id="addActivityButton" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleAddActivity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Add Activity">
                 <graphic>
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@../../../icon/add_activity.png" />
                     </ImageView>
                 </graphic>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
             </Button>
+            <Region VBox.vgrow="ALWAYS" />
+         <Button fx:id="logoutBtn" contentDisplay="LEFT" graphicTextGap="10" onAction="#handleLogout" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Logout">
+            <graphic>
+               <ImageView fitHeight="24" fitWidth="24">
+                  <image>
+                     <Image url="@../../../icon/log-out.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </Button>
         </VBox>
     </left>
 

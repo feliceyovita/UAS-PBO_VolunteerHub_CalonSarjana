@@ -611,4 +611,9 @@ public class adminHomeController {
     private void handleBack() {
         System.out.println("Back button clicked");
     }
+
+    @FXML
+    private void handleLogout(ActionEvent event) {
+        NavigationUtil.logout(event);
+    }
 }

@@ -330,4 +330,8 @@ public class manageActivityController implements Initializable {
             searchField.clear();
         }
     }
+    @FXML
+    private void handleLogout(ActionEvent event) {
+        NavigationUtil.logout(event);
+    }
 }
