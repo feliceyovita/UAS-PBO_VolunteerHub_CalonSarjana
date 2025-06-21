@@ -34,10 +34,6 @@ public class LoginController {
             return;
         }
 
-        if (email.equals("admin@gmail.com") && password.equals("admin123")) {
-            Dashboard dashboard = new AdminDashboard();
-            dashboard.loadDashboard((Stage) usernameField.getScene().getWindow());
-        } else {
             try (Connection conn = Database.getConnection()) {
                 String query = "SELECT * FROM users WHERE email = ? AND password = ?";
                 PreparedStatement stmt = conn.prepareStatement(query);
@@ -87,7 +83,7 @@ public class LoginController {
                 showAlert(AlertType.ERROR, "Error", "Failed to access the database.");
             }
         }
-    }
+
 
     @FXML
     private void handleForgotPassword() {

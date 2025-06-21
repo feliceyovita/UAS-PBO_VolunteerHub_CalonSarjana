@@ -28,6 +28,13 @@
    cd UAS-PBO_VolunteerHub_CalonSarjana
 
 2. Buka proyek di IDE Java seperti IntelliJ IDEA atau NetBeans
+3. Simpan Database
+
+   -Buka Xampp, jalankan Apache dan Mysql
+
+   -masuk ke http://localhost/phpmyadmin.
+
+   -Buat database volunteerhub import database volunteerhub.sql
 3. Pastikan sudah mengatur JavaFX dan SQLite dengan benar
 4. Jalankan aplikasi
 

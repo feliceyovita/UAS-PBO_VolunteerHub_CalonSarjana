@@ -176,13 +176,6 @@ public class manageActivityController implements Initializable {
 
         HBox buttonContainer = new HBox(10);
 
-        // Edit Button
-        Button editButton = new Button("Edit");
-        editButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; " +
-                "-fx-border-radius: 4; -fx-background-radius: 4; -fx-cursor: hand; -fx-font-size: 11px;");
-        editButton.setPrefWidth(60);
-        editButton.setOnAction(e -> handleEditActivity(activity));
-
         // Add components to content
         content.getChildren().addAll(titleLabel, locationLabel, details, buttonContainer);
 
