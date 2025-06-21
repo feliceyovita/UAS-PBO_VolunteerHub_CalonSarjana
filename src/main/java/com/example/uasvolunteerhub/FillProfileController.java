@@ -16,30 +16,32 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class FillProfileController {
+public class FillProfileController extends FormController {
 
-    @FXML
-    private TextField nameField;
-
-    @FXML
-    private TextField emailField;
-
-    @FXML
-    private TextField phoneField;
-
-    @FXML
-    private DatePicker dobPicker;
+    @FXML private TextField nameField;
+    @FXML private TextField emailField;
+    @FXML private TextField phoneField;
+    @FXML private DatePicker dobPicker;
 
     @FXML
     private void handleSave(ActionEvent event) {
-        System.out.println("TOMBOL SAVE DIKLIK!");
+        if (isEmpty(nameField) || isEmpty(emailField) || isEmpty(phoneField)) {
+            showAlert("Input Error", "Please fill in all fields.");
+            return;
+        }
+
+        if (!isValidEmail(emailField.getText())) {
+            showAlert("Input Error", "Please enter a valid email address.");
+            return;
+        }
 
         String name = nameField.getText();
         String email = emailField.getText();
         String phone = phoneField.getText();
         LocalDate dob = dobPicker.getValue();
 
-        int userId = SessionManager.getUserId(); // ambil ID user aktif
+        int userId = SessionManager.getUserId(); // Ambil ID user aktif
+
         try (Connection conn = Database.getConnection()) {
             String sql = "UPDATE users SET name = ?, email = ?, phone_number = ?, birth_date = ? WHERE id = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -56,21 +58,17 @@ public class FillProfileController {
             stmt.setInt(5, userId);
             stmt.executeUpdate();
 
-            System.out.println("Data berhasil disimpan ke database.");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return;
-        }
+            showSuccess("Profile successfully saved!");
 
-        // Lanjut ke halaman berikutnya
-        try {
+            // Redirect ke halaman selesai signup
             Parent root = FXMLLoader.load(getClass().getResource("SignUpDone-view.fxml"));
-            Scene scene = new Scene(root);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
+            stage.setScene(new Scene(root));
             stage.show();
-        } catch (IOException e) {
+
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
+            showAlert("Database Error", "Failed to save profile: " + e.getMessage());
         }
     }
 }
