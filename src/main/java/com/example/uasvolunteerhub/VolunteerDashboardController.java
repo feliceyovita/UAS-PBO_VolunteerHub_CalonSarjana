@@ -50,15 +50,12 @@ public class VolunteerDashboardController {
     @FXML
     private Label totalVolunteersLabel;
 
-    // Database connection details - sesuaikan dengan konfigurasi database Anda
     private static final String DB_URL = "jdbc:mysql://localhost:3306/volunteerhub";
-    private static final String DB_USER = "root"; // sesuaikan dengan username database Anda
-    private static final String DB_PASSWORD = ""; // sesuaikan dengan password database Anda
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "";
 
-    // Static variable to store selected activity for detail view
     private static Activity selectedActivity;
 
-    // Activity data model
     public static class Activity {
         private int id;
         private String title;
@@ -72,7 +69,6 @@ public class VolunteerDashboardController {
         private double donationAmount;
         private String image;
 
-        // Constructor
         public Activity(int id, String title, String date, String benefits, String location,
                         String contact, int slot, String description, String typeOfVolunteer,
                         double donationAmount, String image) {
@@ -89,7 +85,6 @@ public class VolunteerDashboardController {
             this.image = image;
         }
 
-        // Getters
         public int getId() { return id; }
         public String getTitle() { return title; }
         public String getDate() { return date; }
@@ -103,14 +98,12 @@ public class VolunteerDashboardController {
         public String getImage() { return image; }
     }
 
-    // Static method to get selected activity
     public static Activity getSelectedActivity() {
         return selectedActivity;
     }
 
     @FXML
     private void initialize() {
-        // Load activities from database when the dashboard initializes
         loadActivitiesFromDatabase();
         updateStatistics();
     }
@@ -174,7 +167,7 @@ public class VolunteerDashboardController {
 
         int column = 0;
         int row = 0;
-        int maxColumns = 3; // Jumlah kolom maksimal per baris
+        int maxColumns = 3;
 
         for (Activity activity : activities) {
             VBox activityCard = createActivityCard(activity);
@@ -202,24 +195,19 @@ public class VolunteerDashboardController {
         clip.setContent("M0,10 Q0,0 10,0 L215,0 Q220,0 220,10 L220,120 L0,120 Z");
         imageView.setClip(clip);
 
-        // Load image dengan perbaikan
         loadActivityImage(imageView, activity);
 
-        // Content VBox
         VBox content = new VBox(6);
         content.setPadding(new Insets(12));
 
-        // Title
         Label titleLabel = new Label(activity.getTitle());
         titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #666666;");
         titleLabel.setPrefWidth(185);
         titleLabel.setMaxHeight(20);
 
-        // Location
         Label locationLabel = new Label(activity.getLocation());
         locationLabel.setStyle("-fx-text-fill: #666666; -fx-font-size: 10px;");
 
-        // Details VBox
         VBox details = new VBox(2);
 
         Label slotsLabel = new Label("• Slots: " + activity.getSlot());
@@ -242,7 +230,6 @@ public class VolunteerDashboardController {
 
         details.getChildren().addAll(slotsLabel, purposeLabel, dateLabel, benefitsLabel, donationLabel);
 
-        // Details Button
         HBox buttonBox = new HBox();
         buttonBox.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
 
@@ -251,7 +238,6 @@ public class VolunteerDashboardController {
                 "-fx-background-radius: 5; -fx-font-weight: bold; " +
                 "-fx-font-size: 11px; -fx-padding: 5 10;");
 
-        // Add click handler for details button
         detailsBtn.setOnAction(e -> handleActivityDetails(e, activity));
 
         buttonBox.getChildren().add(detailsBtn);
@@ -271,7 +257,6 @@ public class VolunteerDashboardController {
         }
 
         try {
-            // Coba load dari resources dengan path yang benar
             String resourcePath = "/ImgActivity/" + imagePath;
             InputStream imageStream = getClass().getResourceAsStream(resourcePath);
 
@@ -324,11 +309,9 @@ public class VolunteerDashboardController {
 
     private void handleActivityDetails(ActionEvent event, Activity activity) {
         try {
-            // Navigate to activity detail page
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/activity-detail.fxml"));
             Parent root = loader.load();
 
-            // Get the controller and set the activity ID
             ActivityDetailController controller = loader.getController();
             controller.setActivityId(activity.getId());
 
@@ -346,7 +329,6 @@ public class VolunteerDashboardController {
 
     private void updateStatistics() {
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            // Update total activities
             String activityCountSql = "SELECT COUNT(*) FROM activity";
             try (PreparedStatement stmt = conn.prepareStatement(activityCountSql);
                  ResultSet rs = stmt.executeQuery()) {
@@ -358,8 +340,6 @@ public class VolunteerDashboardController {
                 }
             }
 
-            // Update total volunteers (assuming you have user table or volunteer registrations)
-            // You might need to adjust this query based on your database schema
             String volunteerCountSql = "SELECT COUNT(DISTINCT contact) FROM activity";
             try (PreparedStatement stmt = conn.prepareStatement(volunteerCountSql);
                  ResultSet rs = stmt.executeQuery()) {
@@ -411,11 +391,9 @@ public class VolunteerDashboardController {
 
     @FXML
     private void handleSearch() {
-        // Handle search functionality
         String searchText = searchField.getText();
         System.out.println("Searching for: " + searchText);
 
-        // Load activities based on search query
         loadActivitiesFromDatabase(searchText);
     }
 }
