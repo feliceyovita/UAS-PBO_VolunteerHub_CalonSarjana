@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -20,19 +21,44 @@ import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import com.example.uasvolunteerhub.NavigationUtil;
+
 
 public class VolunteerDashboardController {
 
-    @FXML private Button accountBtn;
-    @FXML private Button recommendationBtn;
-    @FXML private Button historyBtn;
-    @FXML private Button logoutBtn;
-    @FXML private TextField searchField;
-    @FXML private FlowPane activitiesGrid; // Tipe sudah benar (FlowPane)
-    @FXML private Label totalActivitiesLabel;
-    @FXML private Label totalVolunteersLabel;
+    @FXML
+    private Button accountBtn;
 
-    // ... (Kelas Activity dan variabel koneksi DB tidak berubah)
+    @FXML
+    private Button recommendationBtn;
+
+    @FXML
+    private Button historyBtn;
+
+    @FXML
+    private Button logoutBtn;
+
+    @FXML
+    private TextField searchField;
+
+    @FXML
+    private GridPane activitiesGrid;
+
+    @FXML
+    private Label totalActivitiesLabel;
+
+    @FXML
+    private Label totalVolunteersLabel;
+
+    // Database connection details - sesuaikan dengan konfigurasi database Anda
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/volunteerhub";
+    private static final String DB_USER = "root"; // sesuaikan dengan username database Anda
+    private static final String DB_PASSWORD = ""; // sesuaikan dengan password database Anda
+
+    // Static variable to store selected activity for detail view
+    private static Activity selectedActivity;
+
+    // Activity data model
     public static class Activity {
         private int id;
         private String title;
@@ -46,6 +72,7 @@ public class VolunteerDashboardController {
         private double donationAmount;
         private String image;
 
+        // Constructor
         public Activity(int id, String title, String date, String benefits, String location,
                         String contact, int slot, String description, String typeOfVolunteer,
                         double donationAmount, String image) {
@@ -76,13 +103,16 @@ public class VolunteerDashboardController {
         public String getImage() { return image; }
     }
 
+    // Static method to get selected activity
+    public static Activity getSelectedActivity() {
+        return selectedActivity;
+    }
 
     @FXML
     private void initialize() {
-        if(totalActivitiesLabel != null) { // Tambahkan null check untuk keamanan
-            updateStatistics();
-        }
+        // Load activities from database when the dashboard initializes
         loadActivitiesFromDatabase();
+        updateStatistics();
     }
 
     private void loadActivitiesFromDatabase() {
@@ -102,8 +132,7 @@ public class VolunteerDashboardController {
             sql += " WHERE title LIKE ? OR location LIKE ? OR description LIKE ? OR type_of_volunteer LIKE ?";
         }
 
-        // Gunakan try-with-resources dengan Database.getConnection() untuk konsistensi
-        try (Connection conn = Database.getConnection();
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             if (searchQuery != null && !searchQuery.trim().isEmpty()) {
@@ -115,145 +144,240 @@ public class VolunteerDashboardController {
             }
 
             ResultSet rs = stmt.executeQuery();
+
             while (rs.next()) {
-                activities.add(new Activity(
-                        rs.getInt("id"), rs.getString("title"), rs.getString("date"),
-                        rs.getString("benefits"), rs.getString("location"), rs.getString("contact"),
-                        rs.getInt("slot"), rs.getString("description"), rs.getString("type_of_volunteer"),
-                        rs.getDouble("donation_amount"), rs.getString("image")
-                ));
+                Activity activity = new Activity(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("date"),
+                        rs.getString("benefits"),
+                        rs.getString("location"),
+                        rs.getString("contact"),
+                        rs.getInt("slot"),
+                        rs.getString("description"),
+                        rs.getString("type_of_volunteer"),
+                        rs.getDouble("donation_amount"),
+                        rs.getString("image")
+                );
+                activities.add(activity);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            showAlert("Database Error", "Gagal memuat aktivitas dari database: " + e.getMessage());
+            showAlert("Database Error", "Failed to load activities from database: " + e.getMessage());
         }
+
         return activities;
     }
 
     private void displayActivities(List<Activity> activities) {
         activitiesGrid.getChildren().clear();
 
-        if (activities.isEmpty()){
-            activitiesGrid.getChildren().add(new Label("Aktivitas tidak ditemukan."));
-            return;
-        }
+        int column = 0;
+        int row = 0;
+        int maxColumns = 3; // Jumlah kolom maksimal per baris
 
-        // Logika baris dan kolom dihapus, FlowPane menanganinya secara otomatis
         for (Activity activity : activities) {
             VBox activityCard = createActivityCard(activity);
-            // Cukup tambahkan kartu, FlowPane akan mengaturnya
-            activitiesGrid.getChildren().add(activityCard);
+            activitiesGrid.add(activityCard, column, row);
+
+            column++;
+            if (column >= maxColumns) {
+                column = 0;
+                row++;
+            }
         }
     }
 
     private VBox createActivityCard(Activity activity) {
         VBox card = new VBox();
-        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
-        // Hapus prefWidth agar ukurannya fleksibel di dalam FlowPane
-        // card.setPrefWidth(220);
-        card.setMinWidth(220); // Beri ukuran minimum agar tidak terlalu kecil
-        card.setMaxWidth(300); // Beri ukuran maksimum
+        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; " + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
+        card.setPrefWidth(220);
 
         ImageView imageView = new ImageView();
+        imageView.setFitWidth(220);
         imageView.setFitHeight(120);
-        // Ikat lebar gambar ke lebar kartu agar responsif
-        imageView.fitWidthProperty().bind(card.widthProperty());
         imageView.setPreserveRatio(false);
+
+        SVGPath clip = new SVGPath();
+        clip.setContent("M0,10 Q0,0 10,0 L215,0 Q220,0 220,10 L220,120 L0,120 Z");
+        imageView.setClip(clip);
+
+        // Load image dengan perbaikan
         loadActivityImage(imageView, activity);
 
+        // Content VBox
         VBox content = new VBox(6);
         content.setPadding(new Insets(12));
 
+        // Title
         Label titleLabel = new Label(activity.getTitle());
         titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #666666;");
-        titleLabel.setWrapText(true);
+        titleLabel.setPrefWidth(185);
+        titleLabel.setMaxHeight(20);
 
+        // Location
         Label locationLabel = new Label(activity.getLocation());
         locationLabel.setStyle("-fx-text-fill: #666666; -fx-font-size: 10px;");
-        locationLabel.setWrapText(true);
 
+        // Details VBox
         VBox details = new VBox(2);
-        details.getChildren().addAll(
-                new Label("• Slots: " + activity.getSlot()),
-                new Label("• Purpose: " + activity.getTypeOfVolunteer()),
-                new Label("• Date: " + activity.getDate())
-        );
-        details.getChildren().forEach(node -> node.setStyle("-fx-font-size: 10px; -fx-text-fill: #666666;"));
 
+        Label slotsLabel = new Label("• Slots: " + activity.getSlot());
+        slotsLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #666666;");
+
+        Label purposeLabel = new Label("• Purpose: " + activity.getTypeOfVolunteer());
+        purposeLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #666666;");
+
+        Label dateLabel = new Label("• Date: " + activity.getDate());
+        dateLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #666666;");
+
+        Label benefitsLabel = new Label("• Benefits: " + activity.getBenefits());
+        benefitsLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #666666;");
+
+        String donationText = activity.getDonationAmount() > 0 ?
+                "• Donation: Rp" + String.format("%.2f", activity.getDonationAmount()) :
+                "• No donation required";
+        Label donationLabel = new Label(donationText);
+        donationLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #666666;");
+
+        details.getChildren().addAll(slotsLabel, purposeLabel, dateLabel, benefitsLabel, donationLabel);
+
+        // Details Button
         HBox buttonBox = new HBox();
-        buttonBox.setAlignment(Pos.CENTER_RIGHT);
+        buttonBox.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
+
         Button detailsBtn = new Button("Details");
-        detailsBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-weight: bold; -fx-font-size: 11px; -fx-padding: 5 10;");
+        detailsBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; " +
+                "-fx-background-radius: 5; -fx-font-weight: bold; " +
+                "-fx-font-size: 11px; -fx-padding: 5 10;");
+
+        // Add click handler for details button
         detailsBtn.setOnAction(e -> handleActivityDetails(e, activity));
+
         buttonBox.getChildren().add(detailsBtn);
 
-        VBox.setVgrow(content, Priority.ALWAYS); // Pastikan konten mengisi ruang vertikal
         content.getChildren().addAll(titleLabel, locationLabel, details, buttonBox);
         card.getChildren().addAll(imageView, content);
+
         return card;
     }
 
     private void loadActivityImage(ImageView imageView, Activity activity) {
         String imagePath = activity.getImage();
+
         if (imagePath == null || imagePath.trim().isEmpty()) {
             loadDefaultImage(imageView);
             return;
         }
+
         try {
-            String resourcePath = "/ImgActivity/" + new File(imagePath).getName();
+            // Coba load dari resources dengan path yang benar
+            String resourcePath = "/ImgActivity/" + imagePath;
             InputStream imageStream = getClass().getResourceAsStream(resourcePath);
+
             if (imageStream != null) {
-                imageView.setImage(new Image(imageStream));
-            } else {
-                loadDefaultImage(imageView);
+                Image image = new Image(imageStream);
+                if (!image.isError()) {
+                    imageView.setImage(image);
+                    System.out.println("Successfully loaded image: " + resourcePath);
+                    return;
+                }
             }
+
+            File imageFile = new File(imagePath);
+            if (imageFile.exists()) {
+                Image image = new Image(imageFile.toURI().toString());
+                if (!image.isError()) {
+                    imageView.setImage(image);
+                    System.out.println("Successfully loaded image from file: " + imagePath);
+                    return;
+                }
+            }
+
+            loadDefaultImage(imageView);
+            System.out.println("Image not found, using default for: " + imagePath);
+
         } catch (Exception e) {
+            System.err.println("Error loading image for activity '" + activity.getTitle() + "': " + e.getMessage());
             loadDefaultImage(imageView);
         }
     }
 
     private void loadDefaultImage(ImageView imageView) {
         try {
-            InputStream defaultStream = getClass().getResourceAsStream("/ImgActivity/default-placeholder.png");
-            if (defaultStream != null) imageView.setImage(new Image(defaultStream));
-            else imageView.setStyle("-fx-background-color: #E0E0E0;");
+            InputStream defaultStream = getClass().getResourceAsStream("ImgActivity/img1.png");
+            if (defaultStream != null) {
+                Image defaultImage = new Image(defaultStream);
+                if (!defaultImage.isError()) {
+                    imageView.setImage(defaultImage);
+                    return;
+                }
+            }
+
+            imageView.setStyle("-fx-background-color: #f0f0f0;");
+
         } catch (Exception e) {
-            imageView.setStyle("-fx-background-color: #E0E0E0;");
+            System.err.println("Error loading default image: " + e.getMessage());
+            imageView.setStyle("-fx-background-color: #f0f0f0;");
         }
     }
 
     private void handleActivityDetails(ActionEvent event, Activity activity) {
         try {
+            // Navigate to activity detail page
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/activity-detail.fxml"));
             Parent root = loader.load();
+
+            // Get the controller and set the activity ID
             ActivityDetailController controller = loader.getController();
             controller.setActivityId(activity.getId());
+
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
             stage.setTitle("Activity Details - " + activity.getTitle());
             stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Navigation Error", "Gagal memuat halaman detail.");
+            showAlert("Navigation Error", "Failed to load activity details page: " + e.getMessage());
         }
     }
 
     private void updateStatistics() {
-        try (Connection conn = Database.getConnection()) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            // Update total activities
             String activityCountSql = "SELECT COUNT(*) FROM activity";
-            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(activityCountSql)) {
+            try (PreparedStatement stmt = conn.prepareStatement(activityCountSql);
+                 ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    if (totalActivitiesLabel != null) totalActivitiesLabel.setText("Total Activities: " + rs.getInt(1));
+                    int totalActivities = rs.getInt(1);
+                    if (totalActivitiesLabel != null) {
+                        totalActivitiesLabel.setText("Total Activities: " + totalActivities);
+                    }
                 }
             }
-            String volunteerCountSql = "SELECT COUNT(DISTINCT id_user) FROM volunteer";
-            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(volunteerCountSql)) {
+
+            // Update total volunteers (assuming you have user table or volunteer registrations)
+            // You might need to adjust this query based on your database schema
+            String volunteerCountSql = "SELECT COUNT(DISTINCT contact) FROM activity";
+            try (PreparedStatement stmt = conn.prepareStatement(volunteerCountSql);
+                 ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    if (totalVolunteersLabel != null) totalVolunteersLabel.setText("Total Volunteers: " + rs.getInt(1));
+                    int totalVolunteers = rs.getInt(1);
+                    if (totalVolunteersLabel != null) {
+                        totalVolunteersLabel.setText("Total Volunteers: " + totalVolunteers);
+                    }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            if (totalActivitiesLabel != null) {
+                totalActivitiesLabel.setText("Total Activities: N/A");
+            }
+            if (totalVolunteersLabel != null) {
+                totalVolunteersLabel.setText("Total Volunteers: N/A");
+            }
         }
     }
 
@@ -265,9 +389,33 @@ public class VolunteerDashboardController {
         alert.showAndWait();
     }
 
-    @FXML private void handleLogout(ActionEvent event) { NavigationUtil.logout(event); }
-    @FXML public void handleAccount(ActionEvent event) { NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/account-Volunteer.fxml", "Profile Account"); }
-    @FXML private void handleRecommendation(ActionEvent event) { /* Anda sudah di halaman ini */ }
-    @FXML private void handleHistory(ActionEvent event) { NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/History.fxml", "Activity History"); }
-    @FXML private void handleSearch() { loadActivitiesFromDatabase(searchField.getText()); }
+    @FXML
+    private void handleLogout(ActionEvent event) {
+        NavigationUtil.logout(event);
+    }
+
+    @FXML
+    public void handleAccount(ActionEvent event) {
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/account-Volunteer.fxml", "Profile Account");
+    }
+
+    @FXML
+    private void handleRecommendation(ActionEvent event) {
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/Volunteer-dashboard.fxml", "Volunteer Recommendation");
+    }
+
+    @FXML
+    private void handleHistory(ActionEvent event) {
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/History.fxml", "Activity History");
+    }
+
+    @FXML
+    private void handleSearch() {
+        // Handle search functionality
+        String searchText = searchField.getText();
+        System.out.println("Searching for: " + searchText);
+
+        // Load activities based on search query
+        loadActivitiesFromDatabase(searchText);
+    }
 }
