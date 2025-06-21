@@ -1,15 +1,12 @@
 package com.example.uasvolunteerhub;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
 import javafx.scene.text.Text;
 import javafx.event.ActionEvent;
-import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,82 +33,22 @@ public class AccountVolunteerController {
 
     @FXML
     public void handleAccount(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/account-Volunteer.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 960, 540);
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Account Page");
-            stage.setWidth(960);
-            stage.setHeight(540);
-            stage.setMinWidth(960);
-            stage.setMinHeight(540);
-            stage.centerOnScreen();
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/account-Volunteer.fxml", "Account Page");
     }
 
     @FXML
     private void handleLogout(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/login.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 960, 540);
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Login");
-            stage.setWidth(960);
-            stage.setHeight(540);
-            stage.setMinWidth(960);
-            stage.setMinHeight(540);
-            stage.centerOnScreen();
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        NavigationUtil.logout(event);
     }
 
     @FXML
     private void handleRecommendation(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/Volunteer-Dashboard-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 960, 540);
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Volunteer Dashboard");
-            stage.setWidth(960);
-            stage.setHeight(540);
-            stage.setMinWidth(960);
-            stage.setMinHeight(540);
-            stage.centerOnScreen();
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/Volunteer-Dashboard-view.fxml", "Volunteer Dashboard");
     }
 
     @FXML
     private void handleHistory(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/History.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 960, 540);
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Activity History");
-            stage.setWidth(960);
-            stage.setHeight(540);
-            stage.setMinWidth(960);
-            stage.setMinHeight(540);
-            stage.centerOnScreen();
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/History.fxml", "Activity History");
     }
 
     @FXML

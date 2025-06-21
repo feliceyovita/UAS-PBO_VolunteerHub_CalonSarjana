@@ -12,13 +12,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-
-<AnchorPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0"  style="-fx-background-color: #B2D3C2;" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.AccountVolunteerController">
+<AnchorPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #B2D3C2;" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.AccountVolunteerController">
    <children>
-      <VBox prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
+      <VBox prefHeight="498.0" prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
          <padding>
-            <Insets bottom="30" left="20" right="20" top="30" />
+            <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
          </padding>
          <children>
             <Button fx:id="accountBtn" graphicTextGap="10" onAction="#handleAccount" prefWidth="160" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center-left;" text="Account">
@@ -63,7 +61,7 @@
                   </ImageView>
                </graphic>
                <VBox.margin>
-                  <Insets top="340.0" />
+                  <Insets top="290.0" />
                </VBox.margin>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -71,7 +69,7 @@
             </Button>
          </children>
       </VBox>
-      <AnchorPane layoutX="239.0" layoutY="46.0" prefHeight="498.0" prefWidth="688.0" style="-fx-background-color: white; -fx-background-radius: 20;">
+      <AnchorPane layoutX="239.0" layoutY="21.0" prefHeight="498.0" prefWidth="688.0" style="-fx-background-color: white; -fx-background-radius: 20;">
          <children>
             <Text fill="#216516" layoutX="265.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit your profile" wrappingWidth="161.85223388671875">
                <font>
