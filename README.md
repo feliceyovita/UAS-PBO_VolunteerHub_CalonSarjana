@@ -60,4 +60,4 @@ Untuk menjadi volunteer:
 
 ## 🎥 Video Presentasi
 Tonton penjelasan dan demo lengkapnya di YouTube:
-🔗
+🔗https://youtu.be/0T6JP_lNFtE
