@@ -110,4 +110,16 @@ public class LoginController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    // Tambahkan method ini di paling bawah class LoginController
+    // Gunanya: Memberi label ID biar Robot TestFX bisa mengetik di sini.
+    @FXML
+    public void initialize() {
+        if (usernameField != null) usernameField.setId("usernameField");
+        if (passwordField != null) passwordField.setId("passwordField");
+
+        // PENTING: Robot butuh ID tombol login juga.
+        // Karena kamu belum punya variabel Button di codingan ini,
+        // nanti robot akan kita suruh klik berdasarkan TEKS tombolnya saja.
+    }
 }
