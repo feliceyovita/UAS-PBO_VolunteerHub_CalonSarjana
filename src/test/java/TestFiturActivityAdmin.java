@@ -19,29 +19,21 @@ public class TestFiturActivityAdmin extends ApplicationTest {
         // --- 1. DARI HALAMAN DEPAN, KLIK TOMBOL LOGIN ---
         clickOn("#loginButton");
 
-        // [PERBAIKAN DISINI]
-        // Beri waktu 1 detik agar animasi pindah ke halaman Login selesai
         try { Thread.sleep(1000); } catch (InterruptedException e) {}
 
         // --- 2. ISI FORM LOGIN ---
-        // ID ini sudah benar sesuai FXML baris 21
         clickOn("#usernameField").write("admin@gmail.com");
 
-        // ID ini sudah benar sesuai FXML baris 26
         clickOn("#passwordField").write("admin123");
 
-        // ID ini sudah benar sesuai FXML baris 29
         clickOn("#tombolLoginSubmit");
 
         // --- 3. MASUK KE MENU ADD ACTIVITY ---
-        // Tunggu lagi karena login butuh proses verifikasi database/pindah scene
         try { Thread.sleep(1000); } catch (InterruptedException e) {}
 
-        // Pastikan ID tombol ini ada di halaman Dashboard Admin
         clickOn("#addActivityButton");
 
         // --- 4. KLIK SUBMIT (TANPA ISI DATA) ---
-        // Pastikan ID tombol ini ada di form Add Activity
         clickOn("#submitButton");
 
         // --- 5. VERIFIKASI ALERT ERROR MUNCUL ---

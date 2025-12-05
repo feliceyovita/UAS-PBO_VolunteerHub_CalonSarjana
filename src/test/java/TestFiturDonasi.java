@@ -33,10 +33,6 @@ public class TestFiturDonasi extends ApplicationTest {
 
         clickOn("#submitButton");
 
-        // --- 4. VALIDASI ISI ALERT ---
-
-        // Robot akan mencari teks spesifik di dalam kotak dialog (.dialog-pane .content)
-        // Harapannya: Muncul peringatan suruh pilih metode
         verifyThat(".dialog-pane .content", hasText("Please select payment method"));
 
         clickOn("OK");
