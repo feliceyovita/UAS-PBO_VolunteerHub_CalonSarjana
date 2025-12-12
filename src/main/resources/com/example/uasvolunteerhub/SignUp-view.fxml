@@ -39,7 +39,9 @@
             </font>
         </Label>
 
-        <Button layoutX="450.0" layoutY="400.0" onAction="#handleSignUp" prefHeight="23.0" prefWidth="120.0" style="-fx-background-radius: 50; -fx-background-color: #216516;" text="Sign Up" textFill="#b2d3c2">
+        <Button fx:id="tombolSignupSubmit" layoutX="450.0" layoutY="400.0" onAction="#handleSignUp"
+                prefHeight="23.0" prefWidth="120.0" style="-fx-background-radius: 50; -fx-background-color: #216516;"
+                text="Sign Up" textFill="#b2d3c2">
             <font>
                 <Font name="SansSerif Bold" size="12.0" />
             </font>
