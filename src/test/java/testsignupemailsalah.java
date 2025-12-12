@@ -7,7 +7,6 @@ import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.base.NodeMatchers;
 
-
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
@@ -16,10 +15,11 @@ public class testsignupemailsalah extends ApplicationTest {
     @Override
     @Start
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(
-                Thread.currentThread().getContextClassLoader()
-                        .getResource("com/example/uasvolunteerhub/SignUp-view.fxml")
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/com/example/uasvolunteerhub/SignUp-view.fxml")
         );
+        Parent root = loader.load();
+
         stage.setScene(new Scene(root));
         stage.show();
     }
