@@ -13,7 +13,7 @@ public class TestLogoutSistem extends ApplicationTest {
     @Override
     public void start(Stage stage) throws Exception {
 
-        // user sudah login -> langsung ke dashboard
+        // User sudah Login -> langsung ke Dashboard
         Parent root = FXMLLoader.load(
                 getClass().getResource(
                         "/com/example/uasvolunteerhub/Volunteer-dashboard-view.fxml"
