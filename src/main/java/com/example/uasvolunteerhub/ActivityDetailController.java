@@ -13,8 +13,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -437,7 +435,7 @@ public class ActivityDetailController {
 
     private void handleDonate(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/Donation-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Donation-view.fxml"));
             Parent root = loader.load();
 
             DonationController donationController = loader.getController();

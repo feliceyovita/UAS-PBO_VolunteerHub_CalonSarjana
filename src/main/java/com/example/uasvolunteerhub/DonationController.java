@@ -1,21 +1,34 @@
 package com.example.uasvolunteerhub;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 
 public class DonationController {
+
+    // --- TAMBAHAN PENTING (Sesuai FXML yang baru) ---
+    @FXML
+    private TextField amountField; // Untuk membaca input nominal
+
+    @FXML
+    private ToggleGroup paymentGroup; // Untuk mengecek pilihan RadioButton
+    // -----------------------------------------------
+
+    private int activityId;
+
+    public DonationController() {
+    }
+
     @FXML
     private void handleLogout(ActionEvent event) {
         NavigationUtil.logout(event);
@@ -36,20 +49,35 @@ public class DonationController {
         NavigationUtil.goTo(event, "/com/example/uasvolunteerhub/History.fxml", "Activity History");
     }
 
-    private int activityId;
-
     public void setActivityId(int activityId) {
         this.activityId = activityId;
     }
 
     @FXML
     private void handleSubmitDonation(ActionEvent event) {
+        // --- LANGKAH 1: VALIDASI INPUT (Jangan Konek Database Dulu!) ---
+
+        // Cek 1: Apakah Nominal Kosong?
+        if (amountField.getText() == null || amountField.getText().trim().isEmpty()) {
+            showAlert(AlertType.WARNING, "Validation Error", "Please enter donation amount");
+            return; // BERHENTI DI SINI
+        }
+
+        // Cek 2: Apakah Metode Pembayaran Belum Dipilih?
+        // (Ini yang ditunggu oleh Unit Test kamu)
+        if (paymentGroup == null || paymentGroup.getSelectedToggle() == null) {
+            showAlert(AlertType.WARNING, "Validation Error", "Please select payment method");
+            return; // BERHENTI DI SINI (Jangan lanjut ke database)
+        }
+
+        // --- LANGKAH 2: KONEKSI DATABASE (Hanya jika lolos validasi) ---
         try (Connection conn = Database.getConnection()) {
             int userId = Session.currentUserId;
 
+            // Ambil judul activity
             String titleQuery = "SELECT title FROM activity WHERE id = ?";
             PreparedStatement titleStmt = conn.prepareStatement(titleQuery);
-            titleStmt.setInt(1, activityId);
+            titleStmt.setInt(1, this.activityId);
             ResultSet rs = titleStmt.executeQuery();
 
             String donationActivityTitle = "Donation contribution";
@@ -57,37 +85,37 @@ public class DonationController {
                 donationActivityTitle = rs.getString("title") + " (donation)";
             }
 
-            String insertQuery = """
-                INSERT INTO volunteer (id_user, id_activity, name, email, phone_number, job, age, address, reason_join)
-                VALUES (?, ?, 'Donatur', '-', '-', '-', 0, '-', ?)
-            """;
+            // Masukkan data ke tabel volunteer
+            String insertQuery = "INSERT INTO volunteer (id_user, id_activity, name, email, phone_number, job, age, address, reason_join) VALUES (?, ?, 'Donatur', '-', '-', '-', 0, '-', ?)";
             PreparedStatement stmt = conn.prepareStatement(insertQuery);
             stmt.setInt(1, userId);
-            stmt.setInt(2, activityId);
+            stmt.setInt(2, this.activityId);
             stmt.setString(3, donationActivityTitle);
+
             stmt.executeUpdate();
 
-            showSuccessAlert(event);
+            // Tampilkan alert sukses
+            this.showSuccessAlert(event);
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Error", "Failed to record donation: " + e.getMessage());
+            // Tampilkan alert error database
+            this.showAlert(AlertType.ERROR, "Error", "Failed to record donation: " + e.getMessage());
         }
     }
 
     private void showSuccessAlert(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Terima Kasih!");
         alert.setHeaderText(null);
         alert.setContentText("Donasi telah disalurkan, terima kasih!");
 
-        alert.showAndWait().ifPresent(response -> {
+        alert.showAndWait().ifPresent((response) -> {
             if (response == ButtonType.OK) {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/uasvolunteerhub/Volunteer-dashboard-view.fxml"));
+                    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/com/example/uasvolunteerhub/Volunteer-dashboard-view.fxml"));
                     Parent dashboardRoot = loader.load();
-
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                     stage.setScene(new Scene(dashboardRoot));
                     stage.setTitle("Volunteer Dashboard");
                     stage.show();
@@ -98,8 +126,9 @@ public class DonationController {
         });
     }
 
-    private void showAlert(String title, String msg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    // Helper method untuk menampilkan alert yang fleksibel
+    private void showAlert(AlertType type, String title, String msg) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(msg);

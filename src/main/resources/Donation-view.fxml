@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-
 <BorderPane minHeight="540.0" minWidth="960.0" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #B2D3C2;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uasvolunteerhub.DonationController">
     <left>
         <VBox prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #3f5441, #92cbc1);">
@@ -16,7 +15,7 @@
                 <Button fx:id="accountBtn" onAction="#handleAccount" style="-fx-background-color: transparent; -fx-font-family: Arial; -fx-font-weight: bold; -fx-alignment: center-left;" text="Account" textFill="WHITE">
                     <graphic>
                         <ImageView fitHeight="24" fitWidth="24">
-                            <image><Image url="@../../../icon/account.png" /></image>
+                            <image><Image url="@icon/account.png" /></image>
                         </ImageView>
                     </graphic>
                     <cursor><Cursor fx:constant="HAND" /></cursor>
@@ -25,7 +24,7 @@
                 <Button fx:id="recommendationBtn" onAction="#handleRecommendation" style="-fx-background-color: transparent; -fx-font-family: Arial; -fx-font-weight: bold; -fx-alignment: center-left;" text="Recommendation" textFill="WHITE">
                     <graphic>
                         <ImageView fitHeight="24" fitWidth="24">
-                            <image><Image url="@../../../icon/recomen.png" /></image>
+                            <image><Image url="@icon/recomen.png" /></image>
                         </ImageView>
                     </graphic>
                     <cursor><Cursor fx:constant="HAND" /></cursor>
@@ -33,7 +32,7 @@
                 <Button fx:id="historyBtn" onAction="#handleHistory" style="-fx-background-color: transparent; -fx-font-family: Arial; -fx-font-weight: bold; -fx-alignment: center-left;" text="History of activity" textFill="WHITE">
                     <graphic>
                         <ImageView fitHeight="24" fitWidth="24">
-                            <image><Image url="@../../../icon/add_activity.png" /></image>
+                            <image><Image url="@icon/add_activity.png" /></image>
                         </ImageView>
                     </graphic>
                     <cursor><Cursor fx:constant="HAND" /></cursor>
@@ -41,7 +40,7 @@
                 <Button fx:id="logoutBtn" onAction="#handleLogout" style="-fx-background-color: transparent; -fx-font-family: Arial; -fx-font-weight: bold; -fx-alignment: center-left;" text="Log out" textFill="WHITE">
                     <graphic>
                         <ImageView fitHeight="24" fitWidth="24">
-                            <image><Image url="@../../../icon/log-out.png" /></image>
+                            <image><Image url="@icon/log-out.png" /></image>
                         </ImageView>
                     </graphic>
                     <cursor><Cursor fx:constant="HAND" /></cursor>
@@ -58,9 +57,9 @@
                 <children>
                     <Text fill="#216516" text="Donation">
                         <font><Font name="SansSerif Bold" size="39.0" /></font>
-                  <VBox.margin>
-                     <Insets top="50.0" />
-                  </VBox.margin>
+                        <VBox.margin>
+                            <Insets top="50.0" />
+                        </VBox.margin>
                     </Text>
 
                     <VBox alignment="CENTER" spacing="15" style="-fx-background-color: white; -fx-background-radius: 20;">
@@ -69,28 +68,31 @@
                             <Label text="Enter donation amount:" textFill="#216516">
                                 <font><Font name="SansSerif Regular" size="18.0" /></font>
                             </Label>
-                            <TextField prefHeight="36.0" prefWidth="445.0" promptText="donation in rupiah, ex: 50.000" style="-fx-background-color: #F4F4F4; -fx-background-radius: 15;">
-                        <cursor>
-                           <Cursor fx:constant="TEXT" />
-                        </cursor></TextField>
 
+                            <TextField fx:id="amountField" prefHeight="36.0" prefWidth="445.0" promptText="donation in rupiah, ex: 50.000" style="-fx-background-color: #F4F4F4; -fx-background-radius: 15;">
+                                <cursor>
+                                    <Cursor fx:constant="TEXT" />
+                                </cursor>
+                            </TextField>
                             <Label text="Payment method:" textFill="#216516">
                                 <font><Font name="SansSerif Regular" size="16.0" /></font>
                             </Label>
                             <VBox spacing="8">
                                 <children>
-                                    <RadioButton text="PayPal">
-                              <cursor>
-                                 <Cursor fx:constant="HAND" />
-                              </cursor></RadioButton>
-                                    <RadioButton text="Bank Transfer">
-                              <cursor>
-                                 <Cursor fx:constant="HAND" />
-                              </cursor></RadioButton>
-                                    <RadioButton text="Debit / credit card">
-                              <cursor>
-                                 <Cursor fx:constant="HAND" />
-                              </cursor></RadioButton>
+                                    <RadioButton fx:id="rbPaypal" text="PayPal">
+                                        <toggleGroup>
+                                            <ToggleGroup fx:id="paymentGroup"/>
+                                        </toggleGroup>
+                                        <cursor><Cursor fx:constant="HAND" /></cursor>
+                                    </RadioButton>
+
+                                    <RadioButton fx:id="rbBank" text="Bank Transfer" toggleGroup="$paymentGroup">
+                                        <cursor><Cursor fx:constant="HAND" /></cursor>
+                                    </RadioButton>
+
+                                    <RadioButton fx:id="rbCard" text="Debit / credit card" toggleGroup="$paymentGroup">
+                                        <cursor><Cursor fx:constant="HAND" /></cursor>
+                                    </RadioButton>
                                 </children>
                             </VBox>
 
